@@ -1,0 +1,9 @@
+A. lambda: A lambda is an anonymous function that can be implemented directly in the body of a method. It takes in any number of parameters and returns a single value.
+
+B. static: The static keyword indicates that a variable or method belongs to the class, rather than an instance of the class.
+
+C. volatile: When a variable is declared as volatile, it signals to the JVM that its value can be changed at any time and that all threads accessing it should have immediate visibility to these changes.
+
+D. interface: An interface in Java is a completely abstract class. It defines a set of methods that a class using the interface must implement, but leaves the implementation of these methods to the class. It's essentially a contract between a class and its interface, specifying what the class must provide.
+
+E. abstract: If a class or method is declared as abstract, it means that it cannot be used on its own. Derived classes must provide the implementation of the abstract methods.

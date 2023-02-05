@@ -1,0 +1,52 @@
+Input a number between 1 and 1000:
+500
+Your guess is too high
+Input a number between 1 and 1000:
+250
+Your guess is too high
+Input a number between 1 and 1000:
+125
+Your guess is too high
+Input a number between 1 and 1000:
+62
+Your guess is too high
+Input a number between 1 and 1000:
+31
+Your guess is too high
+Input a number between 1 and 1000:
+15
+Your guess is too high
+Input a number between 1 and 1000:
+7
+Your guess is too low
+Input a number between 1 and 1000:
+11
+Your guess is too high
+Input a number between 1 and 1000:
+9
+Congratulations! It took you 9 guesses to find the answer
+
+Input a number between 1 and 1000:
+500
+Your guess is too low
+Input a number between 1 and 1000:
+750
+Your guess is too low
+Input a number between 1 and 1000:
+875
+Your guess is too high
+Input a number between 1 and 1000:
+812
+Your guess is too high
+Input a number between 1 and 1000:
+781
+Your guess is too low
+Input a number between 1 and 1000:
+795
+Your guess is too low
+Input a number between 1 and 1000:
+804
+Your guess is too high
+Input a number between 1 and 1000:
+800
+Congratulations! It took you 8 guesses to find the answer
