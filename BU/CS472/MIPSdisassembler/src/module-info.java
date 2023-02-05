@@ -1,9 +1,0 @@
-/**
- * 
- */
-/**
- * @author jiris
- *
- */
-module MIPSdisassembler {
-}
