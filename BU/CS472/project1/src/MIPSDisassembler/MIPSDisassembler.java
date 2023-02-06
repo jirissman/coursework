@@ -1,7 +1,5 @@
 package MIPSDisassembler;
 
-import java.util.*;
-
 public class MIPSDisassembler {
 
 	public static void main(String[] args) {
@@ -24,7 +22,7 @@ public class MIPSDisassembler {
 	private static String disassemble(int programCounter, int instruction) {
 		// output the instruction address
 		String assemblyCode = String.format("%x", programCounter);
-
+		
 		// decode instruction
 		int opcode = instruction >>> 26;
 		int rs = (instruction >>> 21) & 0x1F;
@@ -38,18 +36,18 @@ public class MIPSDisassembler {
 			assemblyCode += " " + functLookup(funct) + " $" + rd + ", $" + rs + ", $" + rt;
 			break;
 		case 0x4: // Branch On Equal
-			assemblyCode += " beq $" + rt + ", $" + rs + ", address "
+			assemblyCode += " beq $" + rs + ", $" + rt + ", address "
 					+ String.format("%x", programCounter + 4 + (offset << 2));
 			break;
 		case 0x5: // Branch On Not Equal
-			assemblyCode += " bne $" + rt + ", $" + rs + ", address "
+			assemblyCode += " bne $" + rs + ", $" + rt + ", address "
 					+ String.format("%x", programCounter + 4 + (offset << 2));
 			break;
 		case 0x23: // Load Word
-			assemblyCode += " lw $" + rt + ", " + offset + "($" + rs + ")";
+			assemblyCode += " lw  $" + rt + ", " + offset + " ($" + rs + ")";
 			break;
 		case 0x2B: // Store Word
-			assemblyCode += " sw $" + rt + ", " + offset + "($" + rs + ")";
+			assemblyCode += " sw  $" + rt + ", " + offset + " ($" + rs + ")";
 			break;
 		default: 
 			assemblyCode += " error";
@@ -68,7 +66,7 @@ public class MIPSDisassembler {
 		case 0x24:
 			return "and";
 		case 0x25:
-			return "or";
+			return "or ";
 		case 0x2A:
 			return "slt";
 		default:
