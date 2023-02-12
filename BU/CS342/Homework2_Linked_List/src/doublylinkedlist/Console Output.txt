@@ -1,0 +1,2 @@
+head -> This -> is -> a -> doubly -> linked -> list -> with -> exactly -> 10 -> nodes -> tail
+tail -> nodes -> 10 -> exactly -> with -> list -> linked -> doubly -> a -> is -> This -> head
