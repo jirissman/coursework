@@ -1,0 +1,19 @@
+Node Class Pseudocode
+
+// data necessary in node
+String containing name
+String containing email
+String containing phone number
+Node reference to next node
+
+// methods
+set name
+get name
+set email
+get email
+set phone number
+get phone number
+set next node
+get next node
+
+standard accessors and mutators... pseudocode feels unecessary here
