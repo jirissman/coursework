@@ -1,0 +1,114 @@
+Linked List Class Pseudocode
+
+// data types necessary to control the linked list
+Initialize head node to null
+Initialize count to zero
+	
+// must support following commands
+Add - add new entry to the list sorted alphabetically by the last word in the name field
+Delete - delete an entry by its index
+Search - locate all entries that contain the entered search string and display them along with the index of the entry
+Email - same as search but on email addresses
+Print - print each entry with an index in the list associated with it
+Modify - show current name, email, and phone number and allow user to change them
+
+// add command (assumes list is already alphabetical)
+create a new node with data provided by user
+initialize temp node to head
+
+If list is empty
+	set head to the new node
+	set count to 1
+	return
+
+If temp's name is after new node's name alphabetically // we want to add new node to head
+	set new node's next node to temp
+	set head to new node
+	increment count by 1
+	return
+	
+While temp is not null
+	If the node after temp has a name after new node's name alphabetically // want to add new node after temp
+		set new node's next node to temp's next node
+		set temps's next node to the new node
+		increment count by 1
+		return
+	Else If the node after temp is null // we reached the end of the list and need to add new node to the end
+		set temps's next node to the new node
+		set new node's next node to null
+		increment count by 1
+		return
+	Else
+		set temp to the next node
+
+// delete command
+If user supplied index is greater than count
+	print an "index out of range" message
+	return false
+
+initialize temp to head
+For 1 to the provided index minus 1 // we want the node before the one to delete
+	set temp to next node
+set temp's next node to the next node's next node // we want to set the next node value of the node before the node we want to delete to the node after the node we want to delete
+decrement count by 1
+return true
+
+// search command
+initialize temp node to head
+initialize counter to 1
+
+While temp is not null
+	If temp's name is equal to the user provided name
+		print counter and temp
+	set temp to the next node
+	increment counter by 1
+return
+
+// email command
+initialize temp node to head
+initialize counter to zero
+
+While temp is not null
+	If temp's email is equal to the user provided email
+		print counter and temp
+	set temp to the next node
+	increment counter by 1
+return
+
+// print entire list command
+initialize temp node to head
+initialize counter to 1
+
+While temp is not null
+	print counter and temp
+	set temp to the next node
+	increment counter by 1
+return
+
+// print index command
+If user supplied index is greater than count
+	print an "index out of range" message
+	return false
+
+initialize temp node to head
+initialize counter to 1
+
+For 1 to the provided index
+	set temp to next node
+print index and temp
+return true
+
+// modify command
+If user supplied index is greater than count
+	print an "index out of range" message
+	return false
+
+initialize temp node to head
+initialize counter to 1
+
+For 1 to the provided index
+	set temp to next node
+print index and temp
+prompt user to modify data and store accordingly
+print index and temp again to confirm
+return true

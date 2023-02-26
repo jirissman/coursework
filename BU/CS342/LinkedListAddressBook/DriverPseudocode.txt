@@ -1,0 +1,48 @@
+Driver Class Pseudocode
+
+initialize new empty linked list
+initialize a scanner object to get input from keyboard
+
+While user has not quit the program
+	print message prompting user for input
+	get user input
+	Switch on user's command
+	Case 'add'
+		get name, email, phone number from user
+		add node with provided info
+		break
+	Case 'print'
+		prompt user for index
+		If no index is provided or index is invalid
+			print entire list
+		Else
+			print entry at the provided index
+		break
+	Case 'search'
+		prompt user for string to search
+		search the list and print matching entries
+		break
+	Case 'email'
+		prompt user for string to search
+		search the list and print matching entries
+		break
+	Case 'modify'
+		While user input is not valid
+			prompt user for index
+			print appropriate error message if input is invalid
+		modify the entry at the provided index
+		break
+	Case 'delete'
+		While user input is not valid
+			prompt user for index
+			print appropriate error message if input is invalid
+		delete entry at the provided index
+		break
+	Case 'help'
+		print help message
+		break
+	Case 'quit'
+		exit program
+	Default
+		print invalid input error message
+		break
