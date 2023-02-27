@@ -1,0 +1,95 @@
+Enter a command. Enter 'h' for help.
+a
+Enter the name:
+Samantha Thompson
+Enter the email:
+samanthathompson@email.com
+Enter the phone number:
+555-890-1234
+New entry [name=Samantha Thompson, email=samanthathompson@email.com, phone=555-890-1234] added.
+Enter a command. Enter 'h' for help.
+a
+Enter the name:
+Matthew Rodriguez
+Enter the email:
+matthewrodriguez@email.com
+Enter the phone number:
+555-901-2345
+New entry [name=Matthew Rodriguez, email=matthewrodriguez@email.com, phone=555-901-2345] added.
+Enter a command. Enter 'h' for help.
+a
+Enter the name:
+Jennifer Lee
+Enter the email:
+jenniferlee@email.com
+Enter the phone number:
+555-012-3456
+New entry [name=Jennifer Lee, email=jenniferlee@email.com, phone=555-012-3456] added.
+Enter a command. Enter 'h' for help.
+p
+Enter the index (use 0 to print all entries):
+0
+1: [name=Jennifer Lee, email=jenniferlee@email.com, phone=555-012-3456]
+2: [name=Matthew Rodriguez, email=matthewrodriguez@email.com, phone=555-901-2345]
+3: [name=Samantha Thompson, email=samanthathompson@email.com, phone=555-890-1234]
+Enter a command. Enter 'h' for help.
+p
+Enter the index (use 0 to print all entries):
+1
+1: [name=Jennifer Lee, email=jenniferlee@email.com, phone=555-012-3456]
+Enter a command. Enter 'h' for help.
+s
+Enter the name to search:
+John Smith
+No entries match the search.
+Enter a command. Enter 'h' for help.
+s
+Enter the name to search:
+Jennifer Lee
+1: [name=Jennifer Lee, email=jenniferlee@email.com, phone=555-012-3456]
+Enter a command. Enter 'h' for help.
+e
+Enter the email to search:
+ericlee@email.com
+No entries match the search.
+Enter a command. Enter 'h' for help.
+e
+Enter the email to search:
+jenniferlee@email.com
+1: [name=Jennifer Lee, email=jenniferlee@email.com, phone=555-012-3456]
+Enter a command. Enter 'h' for help.
+m
+Enter the index to modify:
+3
+3: [name=Samantha Thompson, email=samanthathompson@email.com, phone=555-890-1234]
+Modify the name? (y/n)
+n
+Modify the email? (y/n)
+n
+Modify the phone number? (y/n)
+555-321-9876
+Entry at index 3 succesfully modified.
+3: [name=Samantha Thompson, email=samanthathompson@email.com, phone=555-890-1234]
+Enter a command. Enter 'h' for help.
+d
+Enter the index to delete:
+1
+Entry at index 1 succesfully deleted.
+Enter a command. Enter 'h' for help.
+p
+Enter the index (use 0 to print all entries):
+0
+1: [name=Matthew Rodriguez, email=matthewrodriguez@email.com, phone=555-901-2345]
+2: [name=Samantha Thompson, email=samanthathompson@email.com, phone=555-890-1234]
+Enter a command. Enter 'h' for help.
+h
+Commands are as follows:
+'a' - add a new entry to the list
+'p' - print an entry or the entire list
+'s' - search for a name and return all entries that match
+'e' - same as search but for email
+'m' - modify an entry
+'d' - delete an entry
+'q' - quit the program
+Enter a command. Enter 'h' for help.
+q

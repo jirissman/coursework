@@ -1,0 +1,162 @@
+Enter a command. Enter 'h' for help.
+a
+Enter the name:
+Christopher Wilson
+Enter the email:
+christopherwilson@email.com
+Enter the phone number:
+555-567-8901
+New entry [name=Christopher Wilson, email=christopherwilson@email.com, phone=555-567-8901] added.
+Enter a command. Enter 'h' for help.
+a
+Enter the name:
+Lauren Johnson
+Enter the email:
+laurenjohnson@email.com
+Enter the phone number:
+555-456-7890
+New entry [name=Lauren Johnson, email=laurenjohnson@email.com, phone=555-456-7890] added.
+Enter a command. Enter 'h' for help.
+a
+Enter the name:
+Jonathan Lee
+Enter the email:
+jonathanlee@email.com
+Enter the phone number:
+555-345-6789
+New entry [name=Jonathan Lee, email=jonathanlee@email.com, phone=555-345-6789] added.
+Enter a command. Enter 'h' for help.
+a
+Enter the name:
+Christina Rodriguez
+Enter the email:
+christinarodriguez@email.com
+Enter the phone number:
+555-234-5678
+New entry [name=Christina Rodriguez, email=christinarodriguez@email.com, phone=555-234-5678] added.
+Enter a command. Enter 'h' for help.
+a
+Enter the name:
+Eric Lee
+Enter the email:
+ericlee@email.com
+Enter the phone number:
+555-123-4567
+New entry [name=Eric Lee, email=ericlee@email.com, phone=555-123-4567] added.
+Enter a command. Enter 'h' for help.
+a
+Enter the name:
+Melissa Davis
+Enter the email:
+melissadavis@email.com
+Enter the phone number:
+555-012-3456
+New entry [name=Melissa Davis, email=melissadavis@email.com, phone=555-012-3456] added.
+Enter a command. Enter 'h' for help.
+a
+Enter the name:
+Justin Brown
+Enter the email:
+justinbrown@email.com
+Enter the phone number:
+555-901-2345
+New entry [name=Justin Brown, email=justinbrown@email.com, phone=555-901-2345] added.
+Enter a command. Enter 'h' for help.
+a
+Enter the name:
+Michelle Carter
+Enter the email:
+michellecarter@email.com
+Enter the phone number:
+555-890-1234
+New entry [name=Michelle Carter, email=michellecarter@email.com, phone=555-890-1234] added.
+Enter a command. Enter 'h' for help.
+a
+Enter the name:
+Brandon Scott
+Enter the email:
+brandonscott@email.com
+Enter the phone number:
+555-789-0123
+New entry [name=Brandon Scott, email=brandonscott@email.com, phone=555-789-0123] added.
+Enter a command. Enter 'h' for help.
+p
+Enter the index (use 0 to print all entries):
+0
+1: [name=Justin Brown, email=justinbrown@email.com, phone=555-901-2345]
+2: [name=Michelle Carter, email=michellecarter@email.com, phone=555-890-1234]
+3: [name=Melissa Davis, email=melissadavis@email.com, phone=555-012-3456]
+4: [name=Lauren Johnson, email=laurenjohnson@email.com, phone=555-456-7890]
+5: [name=Eric Lee, email=ericlee@email.com, phone=555-123-4567]
+6: [name=Jonathan Lee, email=jonathanlee@email.com, phone=555-345-6789]
+7: [name=Christina Rodriguez, email=christinarodriguez@email.com, phone=555-234-5678]
+8: [name=Brandon Scott, email=brandonscott@email.com, phone=555-789-0123]
+9: [name=Christopher Wilson, email=christopherwilson@email.com, phone=555-567-8901]
+Enter a command. Enter 'h' for help.
+p
+Enter the index (use 0 to print all entries):
+20
+Index 20 is out of range. Valid range is 1-9
+Enter a command. Enter 'h' for help.
+p
+Enter the index (use 0 to print all entries):
+5
+5: [name=Eric Lee, email=ericlee@email.com, phone=555-123-4567]
+Enter a command. Enter 'h' for help.
+s
+Enter the name to search:
+Brandon Scott
+8: [name=Brandon Scott, email=brandonscott@email.com, phone=555-789-0123]
+Enter a command. Enter 'h' for help.
+e
+Enter the email to search:
+melissadavis@email.com
+3: [name=Melissa Davis, email=melissadavis@email.com, phone=555-012-3456]
+Enter a command. Enter 'h' for help.
+m
+Enter the index to modify:
+8
+8: [name=Brandon Scott, email=brandonscott@email.com, phone=555-789-0123]
+Modify the name? (y/n)
+y
+Enter new name:
+Rachel Nguyen
+Modify the email? (y/n)
+y
+Enter new email:
+rachelnguyen@email.com
+Modify the phone number? (y/n)
+y
+Enter new phone number:
+555-234-5678
+Entry at index 8 succesfully modified.
+8: [name=Rachel Nguyen, email=rachelnguyen@email.com, phone=555-234-5678]
+Enter a command. Enter 'h' for help.
+d
+Enter the index to delete:
+1
+Entry at index 1 succesfully deleted.
+Enter a command. Enter 'h' for help.
+p
+Enter the index (use 0 to print all entries):
+0
+1: [name=Michelle Carter, email=michellecarter@email.com, phone=555-890-1234]
+2: [name=Melissa Davis, email=melissadavis@email.com, phone=555-012-3456]
+3: [name=Lauren Johnson, email=laurenjohnson@email.com, phone=555-456-7890]
+4: [name=Eric Lee, email=ericlee@email.com, phone=555-123-4567]
+5: [name=Jonathan Lee, email=jonathanlee@email.com, phone=555-345-6789]
+6: [name=Christina Rodriguez, email=christinarodriguez@email.com, phone=555-234-5678]
+7: [name=Rachel Nguyen, email=rachelnguyen@email.com, phone=555-234-5678]
+8: [name=Christopher Wilson, email=christopherwilson@email.com, phone=555-567-8901]
+Enter a command. Enter 'h' for help.
+h
+Commands are as follows:
+'a' - add a new entry to the list
+'p' - print an entry or the entire list
+'s' - search for a name and return all entries that match
+'e' - same as search but for email
+'m' - modify an entry
+'d' - delete an entry
+'q' - quit the program
+Enter a command. Enter 'h' for help.
+q

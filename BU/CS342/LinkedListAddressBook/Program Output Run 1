@@ -1,0 +1,153 @@
+Enter a command. Enter 'h' for help.
+a
+Enter the name:
+John Smith
+Enter the email:
+johnsmith@email.com
+Enter the phone number:
+555-123-4567
+New entry [name=John Smith, email=johnsmith@email.com, phone=555-123-4567] added.
+Enter a command. Enter 'h' for help.
+a
+Enter the name:
+Sarah Johnson
+Enter the email:
+sarahjohnson@email.com
+Enter the phone number:
+555-234-5678
+New entry [name=Sarah Johnson, email=sarahjohnson@email.com, phone=555-234-5678] added.
+Enter a command. Enter 'h' for help.
+a
+Enter the name:
+Michael Williams
+Enter the email:
+michaelwilliams@email.com
+Enter the phone number:
+555-345-6789
+New entry [name=Michael Williams, email=michaelwilliams@email.com, phone=555-345-6789] added.
+Enter a command. Enter 'h' for help.
+a
+Enter the name:
+Emily Davis
+Enter the email:
+emilydavis@email.com
+Enter the phone number:
+555-456-7890
+New entry [name=Emily Davis, email=emilydavis@email.com, phone=555-456-7890] added.
+Enter a command. Enter 'h' for help.
+a
+Enter the name:
+David Brown
+Enter the email:
+davidbrown@email.com
+Enter the phone number:
+555-567-8901
+New entry [name=David Brown, email=davidbrown@email.com, phone=555-567-8901] added.
+Enter a command. Enter 'h' for help.
+a
+Enter the name:
+Lisa Miller
+Enter the email:
+lisamiller@email.com
+Enter the phone number:
+555-678-9012
+New entry [name=Lisa Miller, email=lisamiller@email.com, phone=555-678-9012] added.
+Enter a command. Enter 'h' for help.
+a
+Enter the name:
+Brian Wilson
+Enter the email:
+brianwilson@email.com
+Enter the phone number:
+555-789-0123
+New entry [name=Brian Wilson, email=brianwilson@email.com, phone=555-789-0123] added.
+Enter a command. Enter 'h' for help.
+p
+Enter the index (use 0 to print all entries):
+5
+5: [name=John Smith, email=johnsmith@email.com, phone=555-123-4567]
+Enter a command. Enter 'h' for help.
+p
+Enter the index (use 0 to print all entries):
+0
+1: [name=David Brown, email=davidbrown@email.com, phone=555-567-8901]
+2: [name=Emily Davis, email=emilydavis@email.com, phone=555-456-7890]
+3: [name=Sarah Johnson, email=sarahjohnson@email.com, phone=555-234-5678]
+4: [name=Lisa Miller, email=lisamiller@email.com, phone=555-678-9012]
+5: [name=John Smith, email=johnsmith@email.com, phone=555-123-4567]
+6: [name=Michael Williams, email=michaelwilliams@email.com, phone=555-345-6789]
+7: [name=Brian Wilson, email=brianwilson@email.com, phone=555-789-0123]
+Enter a command. Enter 'h' for help.
+s
+Enter the name to search:
+Emily Davis
+2: [name=Emily Davis, email=emilydavis@email.com, phone=555-456-7890]
+Enter a command. Enter 'h' for help.
+e
+Enter the email to search:
+michaelwilliams@email.com
+6: [name=Michael Williams, email=michaelwilliams@email.com, phone=555-345-6789]
+Enter a command. Enter 'h' for help.
+a
+Enter the name:
+David Brown
+Enter the email:
+davidbrown2@email.com
+Enter the phone number:
+555-987-6543
+New entry [name=David Brown, email=davidbrown2@email.com, phone=555-987-6543] added.
+Enter a command. Enter 'h' for help.
+s
+Enter the name to search:
+David Brown
+1: [name=David Brown, email=davidbrown2@email.com, phone=555-987-6543]
+2: [name=David Brown, email=davidbrown@email.com, phone=555-567-8901]
+Enter a command. Enter 'h' for help.
+m
+Enter the index to modify:
+2
+2: [name=David Brown, email=davidbrown@email.com, phone=555-567-8901]
+Modify the name? (y/n)
+y
+Enter new name:
+John Smith
+Modify the email? (y/n)
+n
+Modify the phone number? (y/n)
+n
+Entry at index 2 succesfully modified.
+2: [name=John Smith, email=davidbrown@email.com, phone=555-567-8901]
+Enter a command. Enter 'h' for help.
+s
+Enter the name to search:
+John Smith
+2: [name=John Smith, email=davidbrown@email.com, phone=555-567-8901]
+6: [name=John Smith, email=johnsmith@email.com, phone=555-123-4567]
+Enter a command. Enter 'h' for help.
+d
+Enter the index to delete:
+4
+Entry at index 4 succesfully deleted.
+Enter a command. Enter 'h' for help.
+p
+Enter the index (use 0 to print all entries):
+0
+1: [name=David Brown, email=davidbrown2@email.com, phone=555-987-6543]
+2: [name=John Smith, email=davidbrown@email.com, phone=555-567-8901]
+3: [name=Emily Davis, email=emilydavis@email.com, phone=555-456-7890]
+4: [name=Lisa Miller, email=lisamiller@email.com, phone=555-678-9012]
+5: [name=John Smith, email=johnsmith@email.com, phone=555-123-4567]
+6: [name=Michael Williams, email=michaelwilliams@email.com, phone=555-345-6789]
+7: [name=Brian Wilson, email=brianwilson@email.com, phone=555-789-0123]
+Enter a command. Enter 'h' for help.
+h
+Commands are as follows:
+'a' - add a new entry to the list
+'p' - print an entry or the entire list
+'s' - search for a name and return all entries that match
+'e' - same as search but for email
+'m' - modify an entry
+'d' - delete an entry
+'q' - quit the program
+Enter a command. Enter 'h' for help.
+q
