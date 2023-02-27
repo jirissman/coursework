@@ -19,8 +19,7 @@ public class Driver {
 			kbd.nextLine();
 			switch (command) {
 			case "h": {
-				System.out.println("Commands are as follows:\n"
-						+ "'a' - add a new entry to the list\n"
+				System.out.println("Commands are as follows:\n" + "'a' - add a new entry to the list\n"
 						+ "'p' - print an entry or the entire list\n"
 						+ "'s' - search for a name and return all entries that match\n"
 						+ "'e' - same as search but for email\n" + "'m' - modify an entry\n" + "'d' - delete an entry\n"
@@ -64,6 +63,53 @@ public class Driver {
 				book.email(email);
 				break;
 			}
+			case "m": {
+				System.out.println("Enter the index to modify:");
+				while (!kbd.hasNextInt()) {
+					System.out.println("Invalid input. Enter the index as an integer:");
+					kbd.nextLine();
+				}
+				int index = kbd.nextInt();
+				kbd.nextLine();
+				if (!book.printIndex(index)) { // check is index is valid, if it is print it, otherwise break
+					break;
+				}
+				String name = null;
+				String email = null;
+				String phone = null;
+				System.out.println("Modify the name? (y/n)");
+				if (kbd.nextLine().toLowerCase().equals("y")) {
+					System.out.println("Enter new name:");
+					name = kbd.nextLine();
+				}
+				System.out.println("Modify the email? (y/n)");
+				if (kbd.nextLine().toLowerCase().equals("y")) {
+					System.out.println("Enter new email:");
+					email = kbd.nextLine();
+				}
+				System.out.println("Modify the phone number? (y/n)");
+				if (kbd.nextLine().toLowerCase().equals("y")) {
+					System.out.println("Enter new phone number:");
+					phone = kbd.nextLine();
+				}
+				book.modify(index, name, email, phone);
+				System.out.println("Entry at index " + index + " succesfully modified.");
+				book.printIndex(index);
+				break;
+			}
+			case "d": {
+				System.out.println("Enter the index to delete:");
+				while (!kbd.hasNextInt()) {
+					System.out.println("Invalid input. Enter the index as an integer:");
+					kbd.nextLine();
+				}
+				int index = kbd.nextInt();
+				kbd.nextLine();
+				if(book.delete(index)) {
+					System.out.println("Entry at index " + index + " succesfully deleted.");
+				};
+				break;
+			}
 			case "q": {
 				done = true;
 				break;
@@ -74,38 +120,5 @@ public class Driver {
 			}
 		}
 		kbd.close();
-
-		AddressBook test = new AddressBook();
-		test.add("Mary Jane", "mj@aol.com", "123456789");
-		test.add("Mary Jane", "420@gmail.com", "4206969");
-		test.add("Mary Jane", "blazeIt@gmail.com", "lul");
-		test.add("John Doe", "jd@gmail.com", "8005555555");
-		test.add("Joe Dangerous", "jd@gmail.com", "dont call me haha");
-		test.add("Jane Goodall", "jg@gmail.com", "8082223535");
-		test.add("Bill Rager", "gohard123@gmail.com", "whatever");
-		Node test1 = new Node();
-		Node test2 = new Node();
-		test1.setName("John Doe");
-		test2.setName("John Doe");
-//		System.out.println(test1.getLast());
-//		System.out.println(test2.getLast());
-//		System.out.println(test1.getLast().compareTo(test2.getLast()));
-		test.printAll();
-		System.out.println();
-		test.printIndex(1);
-		test.printIndex(2);
-		test.search("Joe Dangerous");
-		test.modify(5, null, "jd@gmail.com", null);
-//		test.printIndex(4);
-//		test.delete(6);
-//		test.delete(3);
-//		test.delete(1);
-//		test.delete(6);
-//		test.search("Mary Jane");
-//		test.printIndex(2);
-		test.printIndex(-500);
-		System.out.println();
-		test.email("jd@gmail.com");
-
 	}
 }
