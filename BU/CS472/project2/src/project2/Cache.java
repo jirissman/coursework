@@ -17,7 +17,7 @@ public class Cache {
 	}
 
 	public boolean Read(int address) {
-		if (address < 0 || address > 2048) {
+		if (address < 0 || address >= 2048) {
 			System.out.println("Invalid address");
 			return false;
 		}
@@ -52,7 +52,7 @@ public class Cache {
 	}
 
 	public boolean Write(int address, int value) {
-		if (address < 0 || address > 2048) {
+		if (address < 0 || address >= 2048) {
 			System.out.println("Invalid address");
 			return false;
 		}
