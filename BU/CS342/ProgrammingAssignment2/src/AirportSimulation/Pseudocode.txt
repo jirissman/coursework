@@ -1,0 +1,73 @@
+--Simulation Pseudocode--
+initialize clock to 0
+initialize landing queue and takeoff queue to empty
+initialize runway to not busy
+initialize number of crashes to 0
+initialize time waiting in landing and takeoff queues to 0
+
+while clock < simulation end time:
+	if runway is busy:
+		decrement time runway is busy
+    if random event for plane arrival:
+        add plane to landing queue
+    if random event for plane departure:
+        add plane to takeoff queue
+    if runway is free:
+        if landing queue is not empty:
+            remove plane from landing queue
+            if plane has not crashed:
+                set runway to busy for some minutes
+                add time waiting in queue to total wait time for landing
+                increment number of planes landed
+            else:
+                increment number of crashes
+                process next plane in landing queue
+        else if takeoff queue is not empty:
+            remove plane from takeoff queue
+            set runway to busy for some minutes
+            add time waiting in queue to total wait time for takeoff
+             increment number of planes took off
+    increment clock
+
+output number of planes took off
+output number of planes landed
+output number of crashes
+output average time spent in landing queue
+output average time spent in takeoff queue
+
+
+--Queue Pseudocode--
+add(Integer time)
+    create a new node with time value set to input parameter
+    if the queue is empty
+        set tail and head to the new node
+        set count to 1
+    else
+        set the next node of tail to the new node
+        set tail to the new node
+        increment count by 1
+
+remove() returns Integer
+    if the queue is empty
+        return null
+    get the time value of the head and store it in a temporary variable
+    set head to the next node of head
+    decrement count by 1
+    if the queue is now empty
+        set head and tail to null
+    return time
+
+peek() returns Integer
+    if the queue is empty
+        return null
+    return the time value of head
+
+isEmpty() returns boolean
+    return true if count is equal to 0, false otherwise
+
+size() returns int
+    return number of planes in queue
+
+clear()
+    set head and tail to null
+    set count to 0
