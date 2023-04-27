@@ -1,0 +1,295 @@
+Enter a command. Enter 'h' for help.
+a
+Enter the value to be added to the hashtable:
+hello
+New entry hello added.
+Enter a command. Enter 'h' for help.
+a
+Enter the value to be added to the hashtable:
+world
+New entry world added.
+Enter a command. Enter 'h' for help.
+p
+table[00] = NEVER_USED
+table[01] = NEVER_USED
+table[02] = NEVER_USED
+table[03] = NEVER_USED
+table[04] = NEVER_USED
+table[05] = hello
+table[06] = world
+table[07] = NEVER_USED
+table[08] = NEVER_USED
+table[09] = NEVER_USED
+table[10] = NEVER_USED
+table[11] = NEVER_USED
+table[12] = NEVER_USED
+table[13] = NEVER_USED
+table[14] = NEVER_USED
+table[15] = NEVER_USED
+table[16] = NEVER_USED
+table[17] = NEVER_USED
+table[18] = NEVER_USED
+table[19] = NEVER_USED
+table[20] = NEVER_USED
+table[21] = NEVER_USED
+table[22] = NEVER_USED
+table[23] = NEVER_USED
+table[24] = NEVER_USED
+table[25] = NEVER_USED
+table[26] = NEVER_USED
+table[27] = NEVER_USED
+table[28] = NEVER_USED
+table[29] = NEVER_USED
+table[30] = NEVER_USED
+Enter a command. Enter 'h' for help.
+s
+Enter the value to search:
+world
+Value is in the hashtable
+Enter a command. Enter 'h' for help.
+d
+Enter the value to delete:
+hi
+Value not found
+Enter a command. Enter 'h' for help.
+a
+Enter the value to be added to the hashtable:
+hi
+New entry hi added.
+Enter a command. Enter 'h' for help.
+a
+Enter the value to be added to the hashtable:
+green
+New entry green added.
+Enter a command. Enter 'h' for help.
+p
+table[00] = NEVER_USED
+table[01] = NEVER_USED
+table[02] = hi
+table[03] = NEVER_USED
+table[04] = NEVER_USED
+table[05] = hello
+table[06] = world
+table[07] = NEVER_USED
+table[08] = NEVER_USED
+table[09] = green
+table[10] = NEVER_USED
+table[11] = NEVER_USED
+table[12] = NEVER_USED
+table[13] = NEVER_USED
+table[14] = NEVER_USED
+table[15] = NEVER_USED
+table[16] = NEVER_USED
+table[17] = NEVER_USED
+table[18] = NEVER_USED
+table[19] = NEVER_USED
+table[20] = NEVER_USED
+table[21] = NEVER_USED
+table[22] = NEVER_USED
+table[23] = NEVER_USED
+table[24] = NEVER_USED
+table[25] = NEVER_USED
+table[26] = NEVER_USED
+table[27] = NEVER_USED
+table[28] = NEVER_USED
+table[29] = NEVER_USED
+table[30] = NEVER_USED
+Enter a command. Enter 'h' for help.
+d
+Enter the value to delete:
+world
+Value world deleted
+Enter a command. Enter 'h' for help.
+p
+table[00] = NEVER_USED
+table[01] = NEVER_USED
+table[02] = hi
+table[03] = NEVER_USED
+table[04] = NEVER_USED
+table[05] = hello
+table[06] = PREV_USED
+table[07] = NEVER_USED
+table[08] = NEVER_USED
+table[09] = green
+table[10] = NEVER_USED
+table[11] = NEVER_USED
+table[12] = NEVER_USED
+table[13] = NEVER_USED
+table[14] = NEVER_USED
+table[15] = NEVER_USED
+table[16] = NEVER_USED
+table[17] = NEVER_USED
+table[18] = NEVER_USED
+table[19] = NEVER_USED
+table[20] = NEVER_USED
+table[21] = NEVER_USED
+table[22] = NEVER_USED
+table[23] = NEVER_USED
+table[24] = NEVER_USED
+table[25] = NEVER_USED
+table[26] = NEVER_USED
+table[27] = NEVER_USED
+table[28] = NEVER_USED
+table[29] = NEVER_USED
+table[30] = NEVER_USED
+Enter a command. Enter 'h' for help.
+a
+Enter the value to be added to the hashtable:
+sense
+New entry sense added.
+Enter a command. Enter 'h' for help.
+p
+table[00] = NEVER_USED
+table[01] = NEVER_USED
+table[02] = hi
+table[03] = NEVER_USED
+table[04] = NEVER_USED
+table[05] = hello
+table[06] = sense
+table[07] = NEVER_USED
+table[08] = NEVER_USED
+table[09] = green
+table[10] = NEVER_USED
+table[11] = NEVER_USED
+table[12] = NEVER_USED
+table[13] = NEVER_USED
+table[14] = NEVER_USED
+table[15] = NEVER_USED
+table[16] = NEVER_USED
+table[17] = NEVER_USED
+table[18] = NEVER_USED
+table[19] = NEVER_USED
+table[20] = NEVER_USED
+table[21] = NEVER_USED
+table[22] = NEVER_USED
+table[23] = NEVER_USED
+table[24] = NEVER_USED
+table[25] = NEVER_USED
+table[26] = NEVER_USED
+table[27] = NEVER_USED
+table[28] = NEVER_USED
+table[29] = NEVER_USED
+table[30] = NEVER_USED
+Enter a command. Enter 'h' for help.
+a
+Enter the value to be added to the hashtable:
+the
+New entry the added.
+Enter a command. Enter 'h' for help.
+a
+Enter the value to be added to the hashtable:
+quick
+New entry quick added.
+Enter a command. Enter 'h' for help.
+a
+Enter the value to be added to the hashtable:
+brown
+New entry brown added.
+Enter a command. Enter 'h' for help.
+a
+Enter the value to be added to the hashtable:
+fox
+New entry fox added.
+Enter a command. Enter 'h' for help.
+a
+Enter the value to be added to the hashtable:
+jumped
+New entry jumped added.
+Enter a command. Enter 'h' for help.
+a
+Enter the value to be added to the hashtable:
+over
+New entry over added.
+Enter a command. Enter 'h' for help.
+a
+Enter the value to be added to the hashtable:
+the
+New entry the added.
+Enter a command. Enter 'h' for help.
+a
+Enter the value to be added to the hashtable:
+lazy
+New entry lazy added.
+Enter a command. Enter 'h' for help.
+a
+Enter the value to be added to the hashtable:
+dog
+New entry dog added.
+Enter a command. Enter 'h' for help.
+p
+table[00] = NEVER_USED
+table[01] = NEVER_USED
+table[02] = hi
+table[03] = the
+table[04] = fox
+table[05] = hello
+table[06] = sense
+table[07] = jumped
+table[08] = over
+table[09] = green
+table[10] = NEVER_USED
+table[11] = NEVER_USED
+table[12] = dog
+table[13] = lazy
+table[14] = quick
+table[15] = NEVER_USED
+table[16] = NEVER_USED
+table[17] = NEVER_USED
+table[18] = NEVER_USED
+table[19] = NEVER_USED
+table[20] = NEVER_USED
+table[21] = brown
+table[22] = NEVER_USED
+table[23] = NEVER_USED
+table[24] = NEVER_USED
+table[25] = NEVER_USED
+table[26] = NEVER_USED
+table[27] = NEVER_USED
+table[28] = NEVER_USED
+table[29] = NEVER_USED
+table[30] = NEVER_USED
+Enter a command. Enter 'h' for help.
+d
+Enter the value to delete:
+green
+Value green deleted
+Enter a command. Enter 'h' for help.
+s
+Enter the value to search:
+brown
+Value is in the hashtable
+Enter a command. Enter 'h' for help.
+p
+table[00] = NEVER_USED
+table[01] = NEVER_USED
+table[02] = hi
+table[03] = the
+table[04] = fox
+table[05] = hello
+table[06] = sense
+table[07] = jumped
+table[08] = over
+table[09] = PREV_USED
+table[10] = NEVER_USED
+table[11] = NEVER_USED
+table[12] = dog
+table[13] = lazy
+table[14] = quick
+table[15] = NEVER_USED
+table[16] = NEVER_USED
+table[17] = NEVER_USED
+table[18] = NEVER_USED
+table[19] = NEVER_USED
+table[20] = NEVER_USED
+table[21] = brown
+table[22] = NEVER_USED
+table[23] = NEVER_USED
+table[24] = NEVER_USED
+table[25] = NEVER_USED
+table[26] = NEVER_USED
+table[27] = NEVER_USED
+table[28] = NEVER_USED
+table[29] = NEVER_USED
+table[30] = NEVER_USED
+Enter a command. Enter 'h' for help.
+q
