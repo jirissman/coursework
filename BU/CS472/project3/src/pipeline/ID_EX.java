@@ -1,8 +1,6 @@
 package pipeline;
 
 public class ID_EX {
-	// Instruction
-	private String Instruction;
 	// Control
 	private boolean RegDst;
 	private boolean ALUSrc;
@@ -20,7 +18,6 @@ public class ID_EX {
 	private int Function;
 
 	public void copy(ID_EX that) {
-		this.Instruction = that.Instruction;
 		this.RegDst = that.RegDst;
 		this.ALUSrc = that.ALUSrc;
 		this.ALUOp = that.ALUOp;
@@ -39,13 +36,12 @@ public class ID_EX {
 	@Override
 	public String toString() {
 		return String.format(
-				"Instruction = %s%nControl: RegDst=%s, ALUSrc=%s, ALUOp=%02d, MemRead=%s, MemWrite=%s, MemToReg=%s, RegWrite=%s%nReadReg1Value=%03X, ReadReg2Value=%03X, SEOffset=%08X, WriteReg_20_16=%s, WriteReg_15_11=%s, Function=%02X",
-				Instruction, RegDst, ALUSrc, ALUOp, MemRead, MemWrite, MemToReg, RegWrite, ReadReg1Value, ReadReg2Value,
-				SEOffset, WriteReg_20_16, WriteReg_15_11, Function);
+				"Control: RegDst=%s, ALUSrc=%s, ALUOp=%02d, MemRead=%s, MemWrite=%s, MemToReg=%s, RegWrite=%s%nReadReg1Value=%03X, ReadReg2Value=%03X, SEOffset=%08X, WriteReg_20_16=%s, WriteReg_15_11=%s, Function=%02X",
+				RegDst, ALUSrc, ALUOp, MemRead, MemWrite, MemToReg, RegWrite, ReadReg1Value, ReadReg2Value, SEOffset,
+				WriteReg_20_16, WriteReg_15_11, Function);
 	}
 
 	public void clear() {
-		Instruction = "";
 		RegDst = false;
 		ALUSrc = false;
 		ALUOp = 0;
@@ -59,14 +55,6 @@ public class ID_EX {
 		WriteReg_20_16 = 0;
 		WriteReg_15_11 = 0;
 		Function = 0;
-	}
-
-	public String getInstruction() {
-		return Instruction;
-	}
-
-	public void setInstruction(String instruction) {
-		Instruction = instruction;
 	}
 
 	public boolean getRegDst() {

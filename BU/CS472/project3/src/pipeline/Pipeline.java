@@ -50,17 +50,14 @@ public class Pipeline {
 	private void IF_stage() {
 		int instruction = InstructionCache[PC++];
 		IF_ID_WRITE.setInstruction(instruction);
-		IF_ID_WRITE.setInSTRuction(disassemble(instruction));
 	}
 
 	private void ID_stage() {
 		// get instruction from register and pass along to next register
 		int instruction = IF_ID_READ.getInstruction();
-		ID_EX_WRITE.setInstruction(IF_ID_READ.getInSTRuction());
 		// handle nop
 		if (instruction == 0) {
 			ID_EX_WRITE.clear();
-			ID_EX_WRITE.setInstruction("nop");
 			return;
 		}
 		// decode instruction
@@ -89,7 +86,6 @@ public class Pipeline {
 
 	private void EX_stage() {
 		// pass through control bits
-		EX_MEM_WRITE.setInstruction(ID_EX_READ.getInstruction());
 		EX_MEM_WRITE.setMemRead(ID_EX_READ.getMemRead());
 		EX_MEM_WRITE.setMemWrite(ID_EX_READ.getMemWrite());
 		EX_MEM_WRITE.setMemToReg(ID_EX_READ.getMemToReg());
@@ -116,7 +112,6 @@ public class Pipeline {
 
 	private void MEM_stage() {
 		// pass through control bits
-		MEM_WB_WRITE.setInstruction(EX_MEM_READ.getInstruction());
 		MEM_WB_WRITE.setMemToReg(EX_MEM_READ.getMemToReg());
 		MEM_WB_WRITE.setRegWrite(EX_MEM_READ.getRegWrite());
 		// pass through data values
@@ -133,8 +128,10 @@ public class Pipeline {
 
 	private void WB_stage() {
 		if (MEM_WB_READ.getRegWrite()) {
-			// if RegWrite is true, write the data from the correct source depending on MemToReg
-			Regs[MEM_WB_READ.getWriteRegNum()] = MEM_WB_READ.getMemToReg() ? MEM_WB_READ.getLWDataValue() : MEM_WB_READ.getALUResult();
+			// if RegWrite is true, write the data from the correct source depending on
+			// MemToReg
+			Regs[MEM_WB_READ.getWriteRegNum()] = MEM_WB_READ.getMemToReg() ? MEM_WB_READ.getLWDataValue()
+					: MEM_WB_READ.getALUResult();
 		}
 	}
 
@@ -144,14 +141,14 @@ public class Pipeline {
 		for (int i = 0; i < Regs.length; i++) {
 			System.out.printf("%3s=0x%03X%n", "$" + i, Regs[i]);
 		}
-		System.out.println("\nIF/ID_Write\n"+IF_ID_WRITE.toString());
-		System.out.println("\nIF/ID_Read\n"+IF_ID_READ.toString());
-		System.out.println("\nID/EX_Write\n"+ID_EX_WRITE.toString());
-		System.out.println("\nID/EX_Read\n"+ID_EX_READ.toString());
-		System.out.println("\nEX/MEM_Write\n"+EX_MEM_WRITE.toString());
-		System.out.println("\nEX/MEM_Read\n"+EX_MEM_READ.toString());
-		System.out.println("\nMEM/WB_Write\n"+MEM_WB_WRITE.toString());
-		System.out.println("\nMEM/WB_Read\n"+MEM_WB_READ.toString());
+		System.out.println("\nIF/ID_Write\n" + IF_ID_WRITE.toString());
+		System.out.println("\nIF/ID_Read\n" + IF_ID_READ.toString());
+		System.out.println("\nID/EX_Write\n" + ID_EX_WRITE.toString());
+		System.out.println("\nID/EX_Read\n" + ID_EX_READ.toString());
+		System.out.println("\nEX/MEM_Write\n" + EX_MEM_WRITE.toString());
+		System.out.println("\nEX/MEM_Read\n" + EX_MEM_READ.toString());
+		System.out.println("\nMEM/WB_Write\n" + MEM_WB_WRITE.toString());
+		System.out.println("\nMEM/WB_Read\n" + MEM_WB_READ.toString());
 		System.out.println();
 	}
 
@@ -161,42 +158,4 @@ public class Pipeline {
 		EX_MEM_READ.copy(EX_MEM_WRITE);
 		MEM_WB_READ.copy(MEM_WB_WRITE);
 	}
-
-	// disassemble code taken from project 1 and modified for this project
-	private String disassemble(int instruction) {
-		// handle nop
-		if (instruction == 0) {
-			return "nop";
-		}
-		// decode instruction
-		int opcode = instruction >>> 26;
-		int rs = (instruction >>> 21) & 0x1F;
-		int rt = (instruction >>> 16) & 0x1F;
-		int rd = (instruction >>> 11) & 0x1F;
-		int func = instruction & 0x3F;
-		short offset = (short) (instruction & 0xFFFF);
-
-		switch (opcode) {
-		case 0x0: // R-format
-			return funcLookup(func) + " $" + rd + ", $" + rs + ", $" + rt;
-		case 0x20: // Load Byte
-			return "lb  $" + rt + ", " + offset + " ($" + rs + ")";
-		case 0x28: // Store Byte
-			return "sb  $" + rt + ", " + offset + " ($" + rs + ")";
-		default:
-			return "error";
-		}
-	}
-
-	private String funcLookup(int func) {
-		switch (func) {
-		case 0x20:
-			return "add";
-		case 0x22:
-			return "sub";
-		default:
-			return "error";
-		}
-	}
-
 }

@@ -1,8 +1,6 @@
 package pipeline;
 
 public class MEM_WB {
-	// Instruction
-	private String Instruction;
 	// Control
 	private boolean MemToReg;
 	private boolean RegWrite;
@@ -12,7 +10,6 @@ public class MEM_WB {
 	private int WriteRegNum;
 
 	public void copy(MEM_WB that) {
-		this.Instruction = that.Instruction;
 		this.MemToReg = that.MemToReg;
 		this.RegWrite = that.RegWrite;
 		this.ALUResult = that.ALUResult;
@@ -22,17 +19,8 @@ public class MEM_WB {
 
 	@Override
 	public String toString() {
-		return String.format(
-				"Instruction = %s%nControl: MemToReg=%s, RegWrite=%s%nALUResult=%03X, LWDataValue=%03X, WriteRegNum=%s",
-				Instruction, MemToReg, RegWrite, ALUResult, LWDataValue, WriteRegNum);
-	}
-
-	public String getInstruction() {
-		return Instruction;
-	}
-
-	public void setInstruction(String instruction) {
-		Instruction = instruction;
+		return String.format("Control: MemToReg=%s, RegWrite=%s%nALUResult=%03X, LWDataValue=%03X, WriteRegNum=%s",
+				MemToReg, RegWrite, ALUResult, LWDataValue, WriteRegNum);
 	}
 
 	public boolean getMemToReg() {
