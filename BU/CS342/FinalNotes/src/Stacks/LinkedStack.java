@@ -1,0 +1,90 @@
+package Stacks;
+
+
+public class LinkedStack <T> {
+	
+	private StackNode<T> head;
+	private int count;
+	
+	public LinkedStack() {
+		head = null;
+		count = 0;
+	}
+
+	public boolean push(T value) {
+		// Allocate and fill out a new Node
+		StackNode<T> newNode = new StackNode<T>();
+		newNode.setData(value);
+		
+		// Set the next for the new node to refer to the head
+		newNode.setNext(head);
+		
+		count++;
+		
+		// This node becomes the head of the stack.
+		head = newNode;
+		
+		return false;
+	}
+
+	public T pop() {
+		if (isEmpty()) {
+			return null;
+		}
+		T tmp = peek();
+		head = head.getNext();
+		count--;
+		
+		return tmp;
+	}
+
+	public boolean isEmpty() {
+		return (count == 0);
+	}
+
+	public boolean isFull() {
+		return false;
+	}
+
+	public T peek() {
+		if (isEmpty()) {
+			return null;
+		}
+		
+		
+		return head.getData();
+	}
+
+	public int depth() {
+		return count;
+	}
+
+	public void clear() {
+		head = null;
+		count = 0;
+	}
+	
+	public String toString() {
+		String rtn = "";
+		
+		if (isEmpty()) {
+			return "<Empty>";
+		}
+		
+		StackNode<T> tmp = head;
+		
+		while(tmp != null) {
+			if (tmp == head) {
+				rtn += "top -> ";
+			} else {
+				rtn += "       ";
+			}
+			
+			rtn += tmp.getData() + "\n";
+			tmp = tmp.getNext();
+		}
+		
+		return rtn;
+	}
+
+}
