@@ -1,0 +1,70 @@
+Binary Tree Pseudocode
+insert(word): inserts a word into the tree in alphabetical order
+	If the tree is empty (base case), create a new node with the given word and set it as the root
+	If the tree is not empty, compare the given word with the word in the current node
+		If the given word is equal to the current word, increment the count of the current node
+		If the given word is less than the current word, recursively call insert on the left child
+		If the given word is greater than the current word, recursively call insert on the right child
+search(word): searches for a word in the tree and returns its count
+	If the tree is empty (base case), return 0
+	If the tree is not empty, compare the given word with the word in the current node
+		If the given word is equal to the current word, return the count of the current node
+		If the given word is less than the current word, recursively call search on the left child
+		If the given word is greater than the current word, recursively call search on the right child
+depth(): returns the depth of the tree
+	If the tree is empty (base case), return 0
+	If the tree is not empty, return the maximum depth of its left and right subtrees + 1
+size(): returns the number of nodes in the tree
+	If the tree is empty (base case), return 0
+	If the tree is not empty, return the size of its left subtree + the size of its right subtree + 1
+root(): returns the data at the root of the tree
+	If the tree is empty (base case), return null
+	If the tree is not empty, return the data stored in the root node
+sum(): returns the sum of all the nodes in the tree
+	If the tree is empty (base case), return 0
+	If the tree is not empty, return the sum of its left subtree + the sum of its right subtree + the count in the current node
+max(): returns the maximum value in the tree
+	If the tree is empty (base case), return 0
+	If the tree is not empty, return the maximum value among the current node, its left subtree, and its right subtree
+deepest(): returns the word(s) at deepest nodes of the tree
+	If the tree is empty (base case), return nothing
+	If the tree has no children (base case - node is a leaf), return the current word
+	If the left subtree is deeper than the right subtree, return recursive call of deepest on the left child
+	If the right subtree is deeper than the left subtree, return recursive call of deepest on the right child
+	If the left subtree has the same depth as the right subtree
+		Recursively call deepest on the left child
+		Recursively call deepest on the right child
+		Return the concatenated results of the recursive calls
+pre_order_traversal(): returns the first 20 words in a Pre-Order Traversal of the tree
+	Create an empty list equal to the size of the tree to store the traversal
+	Call a recursive helper function with the root node and the list as arguments
+	Return the first 20 words in the list
+internal_pre_order_traversal(node, list): a recursive helper function for pre-order traversal
+	If the tree is empty (base case), return the list
+	If the tree is not empty:
+		Append the word in the current node to the traversal list
+		Recursively call internal_pre_order_traversal on the left child
+		Recursively call internal_pre_order_traversal on the right child
+		Return the list
+post_order_traversal(): returns the first 20 words in a Post-Order Traversal of the tree
+	Create an empty list equal to the size of the tree to store the traversal
+	Call a recursive helper function with the root node and the list as arguments
+	Return the first 20 words in the list
+internal_post_order_traversal(node, list): a recursive helper function for post-order traversal
+	If the tree is empty (base case), return the list
+	If the tree is not empty:
+		Recursively call internal_post_order_traversal on the left child
+		Recursively call internal_post_order_traversal on the right child
+		Append the word in the current node to the traversal list
+		Return the list
+in_order_traversal(): returns the first 20 words in an In-Order Traversal of the tree
+	Create an empty list equal to the size of the tree to store the traversal
+	Call a recursive helper function with the root node and the list as arguments
+	Return the first 20 words in the list
+internal_in_order_traversal(node, list): a recursive helper function for in-order traversal
+	If the tree is empty (base case), return the list
+	If the tree is not empty:
+		Recursively call in_order_traversal_helper on the left child
+		Append the word in the current node to the traversal list
+		Recursively call in_order_traversal_helper on the right child
+		Return the list

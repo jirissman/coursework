@@ -1,0 +1,15 @@
+transylvania   = 16
+harker         = 113
+renfield       = 39
+vampire        = 24
+expostulate    = 1
+fang           = 0
+Depth          = 33
+Unique words   = 10824
+Root word      = the
+Deepest words  = yed 
+Total words    = 163760
+Most used word = 'the' occured 8051 times
+Pre-Order Traversal: the project gutenberg ebook dracula by bram anyone and almost 1995 1897 13000 12 1 10 11 1018 1030 1140 
+In-Order Traversal: 1 10 1018 1030 11 1140 12 1230 1245 12th 13 13000 14 15 1500 16 165 169 17 1777 
+Post-Order Traversal: 1030 1018 1140 11 10 1 12th 1245 1230 13 12 14 1500 169 165 17th 17s 1777 17 1873 
