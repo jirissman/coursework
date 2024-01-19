@@ -10,6 +10,7 @@ public class Driver {
 		System.out.println(me.convert(1234));
 		System.out.println(me.convert(97283457));
 		System.out.println(me.convert(69179));
+		me.recursiveNumbers(1,13);
 	}
 
 	private void recursiveAsterisks(Integer n) {
@@ -48,5 +49,27 @@ public class Driver {
 			char num_char = (char) (num % 10 + 48);
 			return convert(num / 10) + num_char;
 		}
+	}
+
+	private void recursiveNumbers(Integer min, Integer max) {
+
+		if (min.equals(max)) {
+
+			// base case: add n + 1, n, and n + 1
+			System.out.print((max + 1) + " " + max + " " + (max + 1));
+
+//			return (max + 1) + " " + max + " " + (max + 1);
+
+		} else {
+
+			// recursive case: current number is less than n
+			System.out.print(min + " ");
+			recursiveNumbers(min + 1, max);
+			System.out.print(" " + min);
+
+//			return min + " " + recursiveNumbers(min + 1, max) + " " + min;
+
+		}
+
 	}
 }

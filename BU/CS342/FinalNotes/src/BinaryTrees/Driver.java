@@ -11,20 +11,23 @@ public class Driver {
 	
 	private void doIt() {
 		
-		ArrBinTree tree = new ArrBinTree();
+		LinkedBinaryTree tree = new LinkedBinaryTree();
 		tree.inOrderTraversal();
-		tree.add(500);
-		tree.add(250);
-		tree.add(750);
+		tree.add(103);
+		tree.add(78);
+		tree.add(110);
+		tree.add(60);
+		tree.add(100);
+		tree.add(107);
+		tree.add(113);
+		tree.add(12);
+		tree.add(65);
+		tree.add(101);
+		tree.add(122);
+		tree.add(4);
+		tree.add(68);
+		tree.add(115);
 		tree.add(125);
-		tree.add(230);
-		tree.add(790);
-		tree.add(534);
-		tree.add(25);
-		tree.add(75);
-		tree.add(50);
-		tree.add(48);
-		tree.add(92);
 		tree.preOrderTraversal();
 		tree.inOrderTraversal();
 		tree.postOrderTraversal();

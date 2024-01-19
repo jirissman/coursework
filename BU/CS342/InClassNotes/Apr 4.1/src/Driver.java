@@ -8,8 +8,8 @@ public class Driver {
 	}
 	
 	private void doIt() {
-		//count(1,10);
-		dontDoThis(1, 1);
+		count(1,10);
+//		dontDoThis(1, 1);
 	}
 	
 	String space = " ";

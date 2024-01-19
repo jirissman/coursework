@@ -1,11 +1,11 @@
 package SearchingSorting;
 
 
-public class Driver2 {
+public class BubbleSelectionInsertion {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		Driver2 me = new Driver2();
+		BubbleSelectionInsertion me = new BubbleSelectionInsertion();
 		me.doIt();
 	}
 
