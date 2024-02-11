@@ -1,0 +1,186 @@
+########################################################################
+######                                                          ########
+######      Part of code adopted from class code example        ########
+######                                                          ########
+########################################################################
+
+
+############## helper functions #################
+sort_null_counts <- function(data) {
+  # Output null count in each column
+  null_counts <- colSums(is.na(data))
+  
+  # Sort null counts
+  sorted_null_counts <- sort(null_counts, decreasing = TRUE)
+  
+  # Print sorted null counts
+  print(sorted_null_counts)
+}
+
+drop_columns_with_nulls <- function(data, threshold = 0.75) {
+  # Calculate the threshold for null values
+  null_threshold <- nrow(data) * threshold
+  
+  # Find columns with null values exceeding the threshold
+  cols_to_drop <- colSums(is.na(data)) > null_threshold
+  
+  # Drop columns exceeding the threshold
+  data <- data[, !cols_to_drop]
+  
+  return(data)
+}
+
+######### Load data file ################
+
+df <- read.csv('./project_dataset_5K.csv')
+# df
+head(df)
+dim(df)
+
+sort_null_counts(df)
+
+# Drop calculated data starting with "X_"
+raw_df <- df[, !grepl("^X_", names(df))]
+
+######### drop columns with more than 75% of NULL values. #####
+
+#duplicate_rows <- data[duplicated(df), ]
+
+dense_df <- drop_columns_with_nulls(raw_df, 0.5)
+dim(dense_df)
+
+head(dense_df)
+
+sort_null_counts(dense_df)
+
+
+######### Remove near zero variance attributes ################
+
+library(caret)
+near_zero_vars <- nearZeroVar(dense_df, names = TRUE)
+print(near_zero_vars)
+processed_df <- dense_df[,-nearZeroVar(dense_df)]
+dim(processed_df)
+sort_null_counts(processed_df)
+
+
+########## handle missing values ################. 
+library(dplyr)
+library(tidyr)
+## split df based on classification
+df_no <- filter(processed_df,Class == "N")
+df_yes <- filter(processed_df,Class == "Y")
+## replace NA with median
+df_no <- df_no %>% mutate(across(where(is.numeric), ~replace_na(., median(., na.rm=TRUE))))
+df_yes <- df_yes %>% mutate(across(where(is.numeric), ~replace_na(., median(., na.rm=TRUE))))
+## merge back to full df
+no_null_df <- rbind(df_no,df_yes)
+
+
+## collinearity
+corr <- cor(processed_df[c(1:68)]) # if of numeric variables 
+highCorr <- findCorrelation(corr, cutoff = 0.7, names = TRUE)
+length(highCorr)
+highCorr
+
+
+###########  feature selections #########################
+
+# unsuperviced selection 
+
+# pair-wise 
+
+## correlation
+barplot(prop.table(table(processed_df$class)), col = rainbow(3), 
+        ylim = c(0, 0.4), main = "Class Distribution")
+cor(processed_df[c(1:4)])
+
+# plot pair-wise correlations
+library(GGally)
+ggpairs(processed_df)
+ggpairs(processed_df, aes(color=processed_df$class, alpha = 0.5),            
+        upper = list(continuous = wrap("cor", size = 10.0)))
+
+# heatmap
+heatmap(cor(iris.df[c(1:4)]), Rowv=NA, Colv=NA)
+library(gplots)
+heatmap.2(cor(iris.df[c(1:4)]), Rowv = FALSE, Colv = FALSE, dendrogram = "none", 
+          cellnote = round(cor(iris.df[c(1:4)]),2), 
+          notecol = "black", key = FALSE, trace = 'none', margins = c(10,10))
+
+library(ggcorrplot)
+correlation_matrix <- round(cor(iris.df[c(1:4)]),1)
+correlation_matrix <- cor(iris.df[c(1:4)])
+ggcorrplot(correlation_matrix)
+
+
+
+
+
+
+
+
+
+
+############### Data spliting #########################
+
+# stratified data split (by class attribute)
+# read ThoracicSurgery1 data into df
+dim(newdf)
+table(newdf$Class)
+set.seed(123)
+split <- initial_split(newdf, prop = 0.8, strata = Class)
+tr <- training(split)
+ts <- testing(split)
+dim(tr)
+dim(ts)
+table(tr$Class)
+table(ts$Class)
+
+################  Data Transformation  ####################
+
+## min-max normalization
+# define a function
+min_max_scale <- function(x, new_min, new_max) {  
+  new_min + (x - min(x)) * ((new_max - new_min) / (max(x) - min(x)))}
+x = sample(1:100, 20)
+x
+x1<- min_max_scale(x,  0, 1)
+x1
+x2<- min_max_scale(x,  1, 100)
+x2
+
+
+## z-score standardization
+
+# standardize all four predictors
+df_scaled <- newdf
+df_scaled[1:4] <- scale(df_scaled[1:4])
+head(df_scaled)
+summary(df_scaled)
+
+# standardize only sepallength
+df_scaled <- newdf
+df_scaled$sepallength <- scale(df_scaled$sepallength)
+head(df_scaled)
+summary(df_scaled)
+
+
+## disretization with binning
+library(arules)
+# dscritize all numeric attributes to {small, large}
+# use method = "interval“ for equal width
+# use method = "frequency“ for equal frequency
+
+newdf_1 <- discretizeDF(newdf, default = list(method = "interval", breaks = 2,
+                                          labels = c("small", "large")))
+head(newdf_1)
+
+
+# discretize only sepallengh to {short, medium, long}
+
+newdf_2 <- discretizeDF(newdf, methods = 
+                         list(sepallength = list(method = "interval", breaks = 3, 
+                                                 labels = c("short", "medium", "long"))),  
+                       default = list(method = "none"))
+head(newdf_2)
