@@ -1,0 +1,6 @@
+library(readxl)
+hw3 <- read_excel("Homework Assignment 3/hw3.xlsx")
+View(hw3)
+
+model <- lm(hw3$Temperature ~ hw3$Latitude, data = hw3)
+summary(model)
