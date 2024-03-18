@@ -1,0 +1,70 @@
+# load required libraries
+library(rpart) # needed for decision tree
+library(caret) # needed for confusion matrix
+library(rsample) # needed for split data
+# set seed for random number generator
+set.seed(31)
+# read csv into df
+p1.df <- read.csv("./hw6/hw6_p1.csv")
+p2.df <- read.csv("./hw6/hw6_p2.csv")
+
+########## Problem 1 ##########
+
+# create logistic regression model
+logit <- glm(Competitive~., data = p1.df, family = binomial)
+# display model coefficients
+coef(logit)
+
+
+######### Problem 2-4 #########
+
+# convert class to factor
+p2.df$class <- factor(p2.df$class)
+# split data into training and test
+p2.split <- initial_split(p2.df, prop = 0.66, strata = class)
+p2.train <- training(p2.split)
+p2.test <- testing(p2.split)
+# set up train control: repeat 10‐fold cross‐validation 5 times
+train_control <- trainControl(method = "repeatedcv", number = 10, repeats = 5, summaryFunction = defaultSummary)
+
+########## Problem 2 ##########
+
+# set up tune grid: reduce range of optimal parameter values
+J48Grid <- expand.grid(C = c(0.05, 0.1, 0.15), M = (1:4))
+# train J48 model using the train data set
+p2.model <- train(class ~ ., data = p2.train,
+                  method = "J48",
+                  trControl = train_control,
+                  tuneGrid = J48Grid)
+# print model
+p2.model
+# test the model on the test data set
+p2.model_test <- predict(p2.model, newdata = p2.test)
+confusionMatrix(p2.model_test, p2.test$class)
+
+########## Problem 3 ##########
+
+# train rpart model using the train data set
+p3.model <- train(class ~ ., data = p2.train,
+                  method = "rpart",
+                  trControl = train_control,
+                  tuneLength = 10)
+# print model
+p3.model
+# test the model on the test data set
+p3.model_test <- predict(p3.model, newdata = p2.test)
+confusionMatrix(p3.model_test, p2.test$class)
+
+########## Problem 4 ##########
+
+# train KNN model using the train data set
+p4.model <- train(class ~ ., data = p2.train,
+                  method = "knn",
+                  trControl = train_control,
+                  preProcess = c("center","scale"),
+                  tuneLength = 100)
+# print model
+p4.model
+# test the model on the test data set
+p4.model_test <- predict(p4.model, newdata = p2.test)
+confusionMatrix(p4.model_test, p2.test$class)
