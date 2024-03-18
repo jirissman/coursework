@@ -1,0 +1,29 @@
+## Problem 2 & 3
+## read dataset into df
+df <- read.csv('./hw3/ThoracicSurgery.csv',na.strings = "?")
+## calculate correlation matrix of variables we are interested in
+corr_matrix <- cor(df[,c('age', 'trestbps', 'chol', 'thalach', 'oldpeak')])
+## set self-correlation to NA to allow use of max and min function
+diag(corr_matrix) <- NA
+max(corr_matrix, na.rm = TRUE)
+min(corr_matrix, na.rm = TRUE)
+
+## create contingency table
+contingency <- table(df[c('cp','diagnosis')])
+
+
+## Problem 4
+library(FSelector)
+library(Boruta)
+## read dataset into df
+df <- read.csv('./hw3/hw3_p4.csv')
+## cfs
+cfs(Class~.,df)
+## boruta
+Boruta(Class~.,data = df)
+## information gain
+info.gain <- information.gain(Class~., df)
+info.gain <- cbind(rownames(info.gain), data.frame(info.gain, row.names=NULL))
+names(info.gain) <- c("Attribute", "Info Gain")
+sorted.info.gain <- info.gain[order(-info.gain$`Info Gain`), ]
+sorted.info.gain[1:5,]
