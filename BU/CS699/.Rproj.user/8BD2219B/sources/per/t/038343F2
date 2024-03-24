@@ -3,7 +3,7 @@
     "path": "C:/Users/joseph.rissman/OneDrive - INTELLIA THERAPEUTICS/source_code/coursework/BU/CS699/hw7/hw7.R",
     "project_path": "hw7/hw7.R",
     "type": "r_source",
-    "hash": "3068558365",
+    "hash": "430713165",
     "contents": "",
     "dirty": false,
     "created": 1711228429754.0,
@@ -13,15 +13,15 @@
         "tempName": "Untitled1",
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "12,20",
+        "cursorPosition": "16,0",
         "scrollLine": "0"
     },
     "folds": "",
-    "lastKnownWriteTime": 1711298069,
+    "lastKnownWriteTime": 1711301903,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1711298069379,
+    "last_content_update": 1711301903775,
     "read_only": false,
     "read_only_alternatives": []
 }
