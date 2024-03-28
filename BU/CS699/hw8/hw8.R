@@ -1,0 +1,25 @@
+library(arules)
+library(arulesSequences)
+
+########## problem 3 ##########
+tdb <-read.transactions('hw8/hw8_p3.csv', sep = ",")
+summary(tdb)
+rules <- apriori(tdb, support = 0.005, confidence = 0.5, target = "rules")
+summary(rules)
+len4rules <- apriori(tdb, support = 0.005, confidence = 0.5, minlen = 4, maxlen = 4, target = "rules")
+summary(len4rules)
+inspect(sort(rules, by = "coverage")[1:5])
+inspect(sort(rules, by = "lift")[1:5])
+
+########## problem 4 ##########
+df <- read.csv('hw8/hw8_p4.csv')
+colnames(df) = c("sequenceID", "eventID", "SIZE", "Items")
+df[c(1,2)] <- data.frame(lapply(df[c(1,2)], as.factor))
+write.table(df, "hw8/temp.txt", sep=",", row.names = FALSE, col.names = FALSE, quote = FALSE)
+tdb <- read_baskets("hw8/temp.txt", sep = ",", info = c("sequenceID","eventID","SIZE"))
+frequent_sequences <- cspade(tdb, parameter = list(support = 0.4), control = list(verbose = TRUE))
+summary(frequent_sequences)
+rules <- ruleInduction(frequent_sequences, confidence = 0, control = list(verbose = TRUE))
+summary(rules)
+inspect(sort(rules, by = "confidence")[1:5])
+inspect(sort(rules, by = "lift")[1:5])
