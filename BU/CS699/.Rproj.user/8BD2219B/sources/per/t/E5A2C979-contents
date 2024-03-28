@@ -1,0 +1,267 @@
+
+######################## required libraries ############################
+
+library(dplyr)
+library(tidyr)
+library(caret)
+
+library(rsample)   
+library(fmsb)
+
+library(pROC)
+library(ROCR)
+library(Boruta)
+library(ROSE)
+
+library(FSelector)
+library(smotefamily)
+
+###################### Helper Functions ###############################
+calculate_measures <- function(tp, fp, tn, fn){
+  tpr = tp / (tp + fn)
+  fpr = fp / (fp + tn)
+  tnr = tn / (fp + tn)
+  fnr = fn / (fn + tp)
+  precision = tp / (tp + fp)
+  recall = tpr
+  f_measure <- (2 * precision * recall) / (precision + recall)
+  mcc <- (tp*tn - fp*fn)/(sqrt(tp+fp)*sqrt(tp+fn)*sqrt(tn+fp)*sqrt(tn+fn))
+  total = (tp + fn + fp + tn)
+  p_o = (tp + tn) / total
+  p_e1 = ((tp + fn) / total) * ((tp + fp) / total)
+  p_e2 = ((fp + tn) / total) * ((fn + tn) / total)
+  p_e = p_e1 + p_e2
+  k = (p_o - p_e) / (1 - p_e)
+  
+  measures <- c('TPR', 'FPR', 'TNR', 'FNR', 'Precision', 'Recall', 'F-measure', 'MCC', 'Kappa')
+  values <- c(tpr, fpr, tnr, fnr, precision, recall, f_measure, mcc, k)
+  measure.df <- data.frame(measures, values)
+  return (measure.df)
+}
+
+###################### Load data file ##################################
+
+setwd('/Users/yue/iCloudDrive/Documents/BU_course/Spring_24/CS699_Data_Mining/Project/re')
+df <- read.csv('preprocessed_data.csv')
+# df <- select(df,-all_of(c('X')))
+
+df$Class <- factor(df$Class)
+sapply(df, class)
+
+
+
+###### find categorical or numeric attributes ######
+
+# Initialize empty lists
+numeric_cols <- c()
+categorical_cols <- c()
+
+# Loop through each column
+for (col in names(df)) {
+  num_unique <- length(unique(df[[col]]))
+  total_values <- length(df[[col]])
+  
+  if (num_unique  < 10) {
+    categorical_cols <- c(categorical_cols, col)
+  } else {
+    numeric_cols <- c(numeric_cols, col)
+  }
+}
+
+# Print the lists
+cat("Numeric columns:",  length(numeric_cols), "\n \t", numeric_cols, "\n")
+cat("Categorical columns:",  length(categorical_cols), " \n \t", categorical_cols, "\n")
+
+#################### Train/Test splitting #############
+#################### stratified split 
+#################### 66-34% split
+
+set.seed(31)
+split <- initial_split(df, prop = 0.66, strata = Class)
+train <- training(split)
+test <- testing(split)
+
+dim(df)
+dim(train)
+dim(test)
+
+barplot(prop.table(table(train$Class)),
+        col = rainbow(2),
+        ylim = c(0, 1.0),
+        main = "Class Distribution: train after spliting")
+
+barplot(prop.table(table(test$Class)),
+        col = rainbow(2),
+        ylim = c(0, 1.0),
+        main = "Class Distribution: test after spliting")
+
+######################################################## 
+################ imbalance data handling     ###########
+######################################################## 
+
+## undersampling #####################
+
+minor.class <- length(which(train$Class=="Y"))
+major.class  <-length(which(train$Class=="N"))
+
+undersampling_data <- ovun.sample(formula = Class ~ .,  data = train, 
+                                  method = "under",  N=minor.class*2, seed = 123)$data 
+
+
+write.csv(undersampling_data, file = "Project_train_undersampled.csv", row.names = FALSE)
+
+
+# undersampled <-downSample(train, train$Class)
+# 
+# write.csv(undersampled, file = "Project_train_undersampled.csv", row.names = FALSE)
+
+table (undersampling_data$Class)
+
+barplot(prop.table(table(undersampling_data$Class)),
+        col = rainbow(2),
+        ylim = c(0, 1.0),
+        main = "Class Distribution: train after undersampled")
+
+
+## oversampling. #####################
+
+oversampling_data <- ovun.sample(formula = Class ~ .,  data = train, 
+                                 method = "over",  N=major.class*2, seed = 123)$data 
+
+
+write.csv(oversampling_data, file = "Project_train_oversampled.csv", row.names = FALSE)
+# oversampled <-upSample(train, train$Class)
+# 
+# write.csv(oversampled, file = "Project_train_oversampled.csv", row.names = FALSE)
+
+table (oversampling_data$Class)
+
+barplot(prop.table(table(oversampling_data$Class)),
+        col = rainbow(2),
+        ylim = c(0, 1.0),
+        main = "Class Distribution: train after oversampled")
+
+
+###### SMOTE ##########
+smote <- SMOTE( train[, -length(train)] , train[, length(train)], K=7)$data 
+colnames(smote)[which(names(smote) == "class")] <- "Class"
+
+smote$Class <- factor(smote$Class)
+
+table (smote$Class)
+
+write.csv(smote, file = "Project_train_smote.csv", row.names = FALSE)
+
+barplot(prop.table(table(smote$Class)),
+        col = rainbow(2),
+        ylim = c(0, 1.0),
+        main = "Class Distribution: train after SMOTE")
+
+######################################################## 
+##############  Feature selection         ############## 
+######################################################## 
+head(oversampling_data)
+
+# cfs.   correlation based feature selectio methods
+subset <- cfs(Class ~., oversampling_data)
+subset
+
+boruta <- Boruta(Class ~., smote)
+boruta
+write.csv(boruta$finalDecision, file = "./BOruta.csv")
+
+####### chi.squared ###
+
+weights <- chi.squared(Class~., oversampled) 
+print(weights) 
+subset.chi <- cutoff.k(weights, 7) 
+f <- as.simple.formula(subset.chi, "Class") 
+print(f)
+
+####### information gain ################
+subset3 <-information.gain(Class ~., oversampling_data)
+subset3
+
+subset3 <- cutoff.k(subset3, 7)
+InfoGain <- as.simple.formula(subset3, "Class")
+print(InfoGain)
+
+info.gain <- cbind(rownames(subset3), data.frame(subset3))
+names(info.gain) <- c("Attribute", "Info Gain")
+sorted.info.gain <- info.gain[order(-info.gain$`Info Gain`), ]
+sorted.info.gain
+# top 5
+sorted.info.gain[1:7, ]
+
+
+######## gain ratio ###############
+
+weights <- gain.ratio(Class~., oversampling_data)
+print(weights)
+subset <- cutoff.k(weights, 7)
+GainRatio <- as.simple.formula(subset, "Class")
+print(GainRatio)
+print(InfoGain)
+
+###### consistency ###############
+
+subset <- consistency(Class~., oversampling_data) 
+f <- as.simple.formula(subset, "Class") 
+print(f)
+
+
+#############
+# apply PCA on the training dataset
+pc <- prcomp(oversampling_data[, -length(oversampling_data)], center = TRUE, scale = TRUE) # exclude class attribute
+summary(pc)
+
+# first map (project) original attributes to new attributes created by PCA
+tr <- predict(pc, oversampling_data)
+tr <- data.frame(tr, oversampling_data[length(oversampling_data)])
+ts <- predict(pc, test)
+ts <- data.frame(ts, test[length(oversampling_data)])
+
+pca <- tr[c(1:6, length(oversampling_data))]
+
+
+######################################################## 
+######### Modeling training ######
+# native Bayes (demo)
+model_nb <- naiveBayes(Class.ASD ~ ., data = train) # build mode from training data
+pred <- predict(model_nb, newdata = test, type = "class") # test on test/unseen data
+
+######## Performing Review ################
+performance_measures  <- confusionMatrix(data=pred, 
+                                         reference = test$Class, positive = 'YES')
+
+cm <- performance_measures$table
+
+tp = cm[2,2]
+fp = cm[2,1]
+tn = cm[1,1]
+fn = cm[1,2]
+
+performance_measures = calculate_measures(tp, fp, tn, fn)
+performance_measures
+
+## kappa statistic
+k <- Kappa.test(cm)
+k
+k$Result
+print(k)
+
+## ROC area
+pred <- data.frame(pred)
+pred
+
+# prediction {ROCR}, Function to create prediction objects
+pred_perf <- prediction(predictions = pred$YES, labels = test$Class)  
+
+# performance {ROCR}, Function to create performance objects
+roc <- performance(pred_perf, measure="tpr", x.measure = "fpr")
+
+plot(roc, main = "ROC")
+abline(a=0, b= 1)
+roc_area = performance(pred_perf, measure = "auc")
+roc_area@y.values
+
