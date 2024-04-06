@@ -1,0 +1,84 @@
+library(tidyr)
+library(tidyverse)  
+library(cluster)  
+library(factoextra) 
+library(magrittr)
+library(ggplot2)
+setwd("./hw9/")
+
+########## problem 3 ##########
+# read data frame and scale
+p3.df <- read.csv('hw9_p3.csv')
+p3.df <- scale(p3.df)
+
+# k-means
+set.seed(31)
+kmWss <- fviz_nbclust(p3.df, kmeans, method = "wss")
+kmWss
+kmWss$data
+kmSil <- fviz_nbclust(p3.df, kmeans, method = "silhouette")
+kmSil
+k3 <- kmeans(p3.df,centers = 3,nstart = 25)
+k3$centers
+p3.tbl <- as_tibble(p3.df)
+p3.tbl <- mutate(p3.tbl,Cluster = k3$cluster)
+cluster.profile <- summarize(p3.tbl,
+                             across(1:4,list(mean = mean, max = max, min = min)),
+                             .by=Cluster)
+write.csv(cluster.profile,file="p3_cluster_profile.csv")
+
+########## problem 4 ##########
+# read data frame
+p4.df <- read.csv('hw9_p4.csv')
+head(p4.df)
+sapply(p4.df, class)
+p4.df <- as.data.frame(unclass(p4.df), stringsAsFactors = TRUE)
+sapply(p4.df, class)
+gower_dist <- daisy(p4.df, metric = "gower")
+
+sil_width <- c(NA)
+for(i in 2:10){
+  pam_k <- pam(gower_dist, diss = TRUE, k = i)
+  sil_width[i] <- pam_k$silinfo$avg.width
+}
+
+best_k <- which.max(sil_width)
+best_k
+
+# Plot silhouette width (higher is better)
+plot(1:10, sil_width, xlab = "Number of clusters",
+     ylab = "Silhouette Width")
+lines(1:10, sil_width)
+
+########## problem 5 ##########
+
+# read data frame
+p5.df <- read.csv('hw9_p5.csv')
+head(p5.df)
+sapply(p5.df, class)
+p5.df <- as.data.frame(unclass(p5.df), stringsAsFactors = TRUE)
+sapply(p5.df, class)
+gower_dist <- daisy(p5.df, metric = "gower")
+d <- as.dist(gower_dist)
+set.seed(31)
+hc1 <- agnes(d, method = "average")
+hc2 <- agnes(d, method = "single")
+hc3 <- agnes(d, method = "complete")
+hc4 <- agnes(d, method = "ward")
+hc.method <- c("average","single","complete","ward")
+ac <- c(rep(0,4))
+for (i in 1:4) {
+  ac[i] <- agnes(d, method = hc.method[i])$ac
+}
+data <- data.frame(hc.method,ac)
+ggplot(data, aes(x=hc.method,y=ac)) + geom_col()
+
+c3 <- cutree(hc4, k = 3)
+tbl <- as_tibble(c3)
+arrange(mutate(tbl,rownum = 1:500),value)
+tbl.rows <- group_by(mutate(tbl,rownum = 1:500),value) %>%
+  summarise(rows = (paste(rownum, collapse = ", ")))
+paste("Cluster 1: rows {",tbl.rows[1,2],"}",sep="")
+paste("Cluster 2: rows {",tbl.rows[2,2],"}",sep="")
+paste("Cluster 3: rows {",tbl.rows[3,2],"}",sep="")
+

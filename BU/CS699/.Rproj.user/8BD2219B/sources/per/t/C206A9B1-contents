@@ -1,0 +1,210 @@
+## L9 Clustering
+## 
+
+#############################################################################
+
+library(tidyr)
+library(tidyverse)  
+library(cluster)  
+library(factoextra) 
+library(magrittr)
+
+setwd('C:/Courses/C2023/699/Slides/Fall2023/R/L9')
+
+#############################################################################
+## k-means
+## consumer reduced dataset
+df<-read.csv('consumer_reduced.csv')
+head(df)
+
+## use k-means with only numeric predictors
+sapply(df, function(x) sum(is.na(x)))
+head(df)
+task.df <- df[, c(4,5,6)]
+head(task.df)
+task.df <- scale(task.df)
+head(task.df)
+# run 25 times with 25 random sets of initial centroids; set k = 4
+k4 <- kmeans(task.df, centers = 4, nstart = 25)
+k4$size
+k4$cluster
+k4$withinss
+k4$tot.withinss
+
+## plot centroids profile
+# plot an empty plot
+
+plot(0, ylab = "", xlab = "", type = "l", 
+     ylim = c(min(k4$centers), max(k4$centers)+1), xlim = c(0,3), xaxt = "n")
+
+axis(1, at = c(1:3), labels = c("A", "B", "C"))
+
+# plot centroids
+
+lines(k4$centers[1, ], col = "blue")
+lines(k4$centers[2, ], col = "green")
+lines(k4$centers[3, ], col = "red")
+lines(k4$centers[4, ], col = "black")
+
+clusters <- c("Cluster 1","Cluster 2",
+              "Cluster 3", "Cluster 4")
+legend( x = "topleft",
+        legend = clusters,
+        col = c("blue","green","red", "black"), lwd=1, lty=c(1,1,1,1),
+        cex = 0.6)
+vars <- c("A: Age", "B: EmployYears", "C: SalaryK")
+legend( x = "topright", text.width = strwidth(vars)[4]/2,
+        legend = vars, cex = 0.6)
+
+set.seed(31)
+totalSSE <- c()
+for (k in c(2:10)){
+  km <- kmeans(task.df, centers = k, nstart = 25)
+  totalSSE[k] <- km$tot.withinss
+}
+totalSSE
+plot(totalSSE, xlim = c(1, 11), type = "o", pch = 19, xlab = "k")
+
+## use fviz_nbclust function to plot 
+set.seed(31)
+kmWss <- fviz_nbclust(task.df, kmeans, method = "wss")
+kmWss
+kmSil <- fviz_nbclust(task.df, kmeans, method = "silhouette")
+kmSil
+
+############################################################################
+## PAM k-medoids
+
+df<-read.csv('consumer_reduced.csv')
+head(df)
+sapply(df, class)
+
+## use only numeric
+df.numeric <- df[, c(4,5,6)]
+head(df.numeric)
+df.numeric <- scale(df.numeric)
+head(df.numeric)
+d <- get_dist(df.numeric)
+
+set.seed(31)
+pam_4 <- pam(d, diss = TRUE, k = 4)
+pam_4$medoids
+
+sil_width <- c(NA)
+for(i in 2:10){
+  pam_k <- pam(d, diss = TRUE, k = i)
+  sil_width[i] <- pam_k$silinfo$avg.width
+}
+
+best_k <- which.max(sil_width)
+best_k
+
+# Plot sihouette width (higher is better)
+plot(1:10, sil_width, xlab = "Number of clusters",
+     ylab = "Silhouette Width")
+lines(1:10, sil_width)
+
+## use all predictors
+## use Gower distance
+
+df<-read.csv('consumer_reduced.csv')
+head(df)
+sapply(df, class)
+df <- as.data.frame(unclass(df), stringsAsFactors = TRUE)
+sapply(df, class)
+gower_dist <- daisy(df, metric = "gower")
+
+pam_4 <- pam(gower_dist, diss = TRUE, k = 4)
+pam_4$clusinfo
+pam_4$medoids
+
+sil_width <- c(NA)
+for(i in 2:20){
+  pam_k <- pam(gower_dist, diss = TRUE, k = i)
+  sil_width[i] <- pam_k$silinfo$avg.width
+}
+
+best_k <- which.max(sil_width)
+best_k
+
+# Plot sihouette width (higher is better)
+plot(1:20, sil_width, xlab = "Number of clusters",
+     ylab = "Silhouette Width")
+lines(1:20, sil_width)
+
+
+#############################################################################
+## hierarchical clustering with Gower distance
+
+library(tidyverse)  # data manipulation
+library(cluster)    # clustering algorithms
+library(factoextra) # clustering visualization
+library(dendextend) # for comparing two dendrograms
+
+df<-read.csv('consumer_reduced.csv')
+head(df)
+sapply(df, class)
+df <- as.data.frame(unclass(df), stringsAsFactors = TRUE)
+sapply(df, class)
+gower_dist <- daisy(df, metric = "gower")
+d <- as.dist(gower_dist)
+
+hc1 <- hclust(d, method = "single")
+plot(hc1, hang = -1, main = "Single")
+hc2 <- hclust(d, method = "complete")
+plot(hc2, hang = -1, main = "Complete")
+hc3 <- hclust(d, method = "average")
+plot(hc3, hang = -1, main = "Average")
+hc4 <- hclust(d, method = "centroid")
+plot(hc4, hang = -1, main = "Centroid")
+hc5 <- hclust(d, method = "ward.D")
+plot(hc5, hang = -1, main = "Ward")
+
+small.df <- df[c(1:20), ]
+small.df
+gower_dist <- daisy(small.df, metric = "gower")
+d <- as.dist(gower_dist)
+
+hc1 <- hclust(d, method = "single")
+plot(hc1, hang = -1, main = "Single")
+hc2 <- hclust(d, method = "complete")
+plot(hc2, hang = -1, main = "Complete")
+hc3 <- hclust(d, method = "average")
+plot(hc3, hang = -1, main = "Average")
+hc4 <- hclust(d, method = "centroid")
+plot(hc4, hang = -1, main = "Centroid")
+hc5 <- hclust(d, method = "ward.D")
+plot(hc5, hang = -1, main = "Ward")
+c3 <- cutree(hc5, k = 3)
+c3
+c6 <- cutree(hc5, k = 6)
+c6
+
+# Agnes clustering algorithm
+set.seed(31)
+hc6 <- agnes(d, method = "complete")
+pltree(hc6, cex = 0.5, hang = -1, main = "Agnes - Complete")
+
+c3 <- cutree(hc6, k = 3)
+c3
+c5 <- cutree(hc6, k = 5)
+c5
+
+# Agglomerative coefficient
+# close to 1 is better
+hc6$ac
+
+methods <- c( "average", "single", "complete", "ward")
+names(methods) <- c( "average", "single", "complete", "ward")
+
+# function to compute coefficient
+ac <- function(x) {
+  agnes(d, method = x)$ac
+}
+
+agg_coeff <- map_dbl(methods, ac)
+agg_coeff
+barplot(agg_coeff, names.arg = names(agg_coeff), xlab = "Methods", 
+        ylab ="Agglomerative Coefficient", col ="green", 
+        main ="")
+
