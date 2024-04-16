@@ -1,0 +1,173 @@
+
+# Problem 3 ---------------------------------------------------------------
+
+library(forecast)
+p2.data <- read.csv("hw10/hw10_p2.csv")
+
+## create time series
+export.ts <- ts(p2.data$Exports,start = 1960,end = 2009)
+
+## plot time series
+plot(export.ts, xlab = "Year", ylab = "Exports", ylim = c(0,20),
+     bty = "l")
+
+## split to training and validation sets
+nValid <- 10
+nTrain <- length(export.ts) - nValid
+
+train.ts <- window(export.ts, start = 1960, end = 1960 + nTrain - 1)
+valid.ts <- window(export.ts, start = 1960 + nTrain)
+
+#### Linear Model ####
+## fit linear trend model to training set and create forecasts
+train.lm <- tslm(train.ts ~ trend)
+train.lm
+train.lm.pred <- forecast(train.lm, h = nValid, level = 0)
+
+## plot actual vs. predicted
+pred.valid <- data.frame(cbind(valid.ts, train.lm.pred$mean))
+colnames(pred.valid) <- c("Actual", "Predicted")
+t <- c(1:10)
+plot(t, pred.valid$Actual, type = "l", col = "blue", ylab = "Values", 
+     main = "Actual vs. Predicted")
+lines(t, pred.valid$Predicted, type = "l", col = "red")
+legend(x = "topleft", legend = c("Actual", "Predicted"), col=c("blue","red"),
+       lty = c(1, 1), cex = 0.6)
+
+## calculate RMSE
+pred.rmse <- sqrt(sum((pred.valid$Actual - pred.valid$Predicted)^2)/nValid)
+pred.rmse
+
+
+#### Exponential Model ####
+## fit exponential trend using tslm() with argument lambda = 0 
+## log(Y) transformation is automatically done
+train.lm.expo.trend <- tslm(train.ts ~ trend, lambda = 0)
+train.lm.expo.trend
+train.lm.expo.trend.pred <- forecast(train.lm.expo.trend, h = nValid, level = 0)
+
+## plot actual vs. predicted
+pred.valid <- data.frame(cbind(valid.ts, train.lm.expo.trend.pred$mean))
+colnames(pred.valid) <- c("Actual", "Predicted")
+t <- c(1:10)
+plot(t, pred.valid$Actual, type = "l", col = "blue", ylab = "Values", 
+     main = "Actual vs. Predicted")
+lines(t, pred.valid$Predicted, type = "l", col = "red")
+legend(x = "topleft", legend = c("Actual", "Predicted"), col=c("blue","red"),
+       lty = c(1, 1), cex = 0.6)
+
+## calculate RMSE
+pred.rmse <- sqrt(sum((pred.valid$Actual - pred.valid$Predicted)^2)/nValid)
+pred.rmse
+
+
+#### Quadratic Model ####
+## fit quadratic trend 
+train.lm.poly.trend <- tslm(train.ts ~ trend + I(trend^2))
+summary(train.lm.poly.trend)
+train.lm.poly.trend.pred <- forecast(train.lm.poly.trend, h = nValid, level = 0)
+
+## plot actual vs. predicted
+pred.valid <- data.frame(cbind(valid.ts, train.lm.poly.trend.pred$mean))
+colnames(pred.valid) <- c("Actual", "Predicted")
+t <- c(1:10)
+plot(t, pred.valid$Actual, type = "l", col = "blue", ylab = "Values", 
+     main = "Actual vs. Predicted")
+lines(t, pred.valid$Predicted, type = "l", col = "red")
+legend(x = "topleft", legend = c("Actual", "Predicted"), col=c("blue","red"),
+       lty = c(1, 1), cex = 0.6)
+
+## calculate RMSE
+pred.rmse <- sqrt(sum((pred.valid$Actual - pred.valid$Predicted)^2)/nValid)
+pred.rmse
+
+
+# Problem 4 ---------------------------------------------------------------
+
+
+p3.data <- read.csv("hw10/hw10_p3.csv")
+head(p3.data)
+
+## create time series
+trips.ts <- ts(p3.data$Trips, start = c(1998,1),end = c(2016,4), freq = 4)
+
+## plot time series
+plot(trips.ts, xlab = "Time", ylab = "Trips")
+
+## decompose time series
+components.ts = decompose(trips.ts)
+
+## plot time series decomposition
+plot(components.ts)
+
+## split to training and validation sets
+nValid <- 12
+nTrain <- length(trips.ts) - nValid
+
+train.ts <- window(trips.ts, start = c(1998, 1), end = c(1998, nTrain))
+valid.ts <- window(trips.ts, start = c(1998, nTrain + 1), 
+                   end = c(1998, nTrain + nValid))
+
+#### quadratic trend and seasonality ####
+train.lm.trend.season <- tslm(train.ts ~ trend + I(trend^2) + season)
+summary(train.lm.trend.season)
+train.lm.trend.season.pred <- forecast(train.lm.trend.season, h = nValid, level = 0)
+
+## plot actual vs. predicted and calculate RMSE
+pred.valid <- data.frame(cbind(valid.ts, train.lm.trend.season.pred$mean))
+colnames(pred.valid) <- c("Actual", "Predicted")
+t <- c(1:12)
+plot(t, pred.valid$Actual, ylim = c(8,13), type = "l", col = "blue", ylab = "Values", 
+     main = "Actual vs. Predicted")
+lines(t, pred.valid$Predicted, type = "l", col = "red")
+legend(x = "topright", legend = c("Actual", "Predicted"), col=c("blue","red"),
+       lty = c(1, 1), cex = 0.6)
+
+forecast::accuracy(train.lm.trend.season.pred, valid.ts)
+
+#### Holt-Winters exponential smoothing ####
+## use ets() with option model = "MAA" to fit Holt-Winter's exponential smoothing 
+## with multiplicative error, additive trend, and additive seasonality. 
+## ets: Exponential smoothing state space model
+
+hwin <- ets(train.ts, model = "MAA")
+hwin.pred <- forecast(hwin, h = nValid, level = 0)
+
+## plot actual vs. predicted and calculate RMSE
+pred.valid <- data.frame(cbind(valid.ts, hwin.pred$mean))
+colnames(pred.valid) <- c("Actual", "Predicted")
+t <- c(1:12)
+plot(t, pred.valid$Actual, ylim = c(8, 13), type = "l", col = "blue", ylab = "Values", 
+     main = "Actual vs. Predicted")
+lines(t, pred.valid$Predicted, type = "l", col = "red")
+legend(x = "topright", legend = c("Actual", "Predicted"), col=c("blue","red"),
+       lty = c(1, 1), cex = 0.6)
+
+forecast::accuracy(hwin.pred, valid.ts)
+
+#### ARIMA ####
+## arima(p, d, q)
+## p: AR order, d: degree of differences, q: MA order
+
+## auto.arima
+auto.arima.fit <- auto.arima(train.ts)
+arimaorder(auto.arima.fit)
+
+## use parameters from auto.arima
+arima.model <- arima(train.ts, order=c(0,0,0),seasonal = 
+                       list(order = c(0,1,1), period = 4), method="ML")
+
+
+arima.pred<-forecast(arima.model, h = nValid, level = 0)
+
+## plot actual vs. predicted and calculate RMSE
+pred.valid <- data.frame(cbind(valid.ts, arima.pred$mean))
+colnames(pred.valid) <- c("Actual", "Predicted")
+t <- c(1:12)
+plot(t, pred.valid$Actual, ylim = c(8, 13), type = "l", col = "blue", ylab = "Values", 
+     main = "Actual vs. Predicted")
+lines(t, pred.valid$Predicted, type = "l", col = "red")
+legend(x = "topright", legend = c("Actual", "Predicted"), col=c("blue","red"),
+       lty = c(1, 1), cex = 0.6)
+
+forecast::accuracy(arima.pred, valid.ts)

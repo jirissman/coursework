@@ -1,0 +1,410 @@
+###############################################################################
+## Time Series
+## Amtrak data
+
+setwd('C:/Courses/C2024/699/Slides/TS')
+
+library(forecast)
+amtrak.data<-read.csv('Amtrak.csv')
+head(amtrak.data, 15)
+
+plot(amtrak.data$Ridership, type = "l", xlab = "Time", ylab = "Ridership",
+     main = "Amtrak Ridership (in 1,000)")
+
+## frequency: number of times data was collected per year
+ridership.ts <- ts(amtrak.data$Ridership, start = c(1991,1),
+                   end = c(2004,3), freq = 12)
+plot(ridership.ts, xlab = "Time", ylab = "Ridership", main = "Amtrak Ridership (in 1,000)")
+
+## decompose
+components.ts = decompose(ridership.ts)
+plot(components.ts)
+
+## milk
+milk.data<-read.csv('monthly-milk-production.csv')
+head(milk.data)
+colnames(milk.data)[2] <- "Production"
+head(milk.data)
+milk.ts <- ts(milk.data$Production, start = c(1962,1),
+                   end = c(1975,12), freq = 12)
+plot(milk.ts, xlab = "Time", ylab = "Production", main = "Monthly Milk Production")
+
+components.ts = decompose(milk.ts)
+plot(components.ts)
+autoplot(components.ts)
+
+## number of births per month in New York city, from January 1946 to December 1959
+ny.birth<-read.csv('ny-monthly-births.txt')
+head(ny.birth)
+ny.birth.ts <- ts(ny.birth, start = c(1946, 1), frequency = 12)
+plot(ny.birth.ts, xlab = "Time", ylab = "Births (1,000)", main = "NY Number of Births")
+
+components.ts = decompose(ny.birth.ts)
+plot(components.ts)
+
+###############################################################################
+## seasonality
+library(pracma) # for detrend
+
+## CO2 concentration
+co2<-read.csv('co2-concentration.csv')
+
+co2.ts <- ts(co2$CO2, start = c(1974,5),
+                     end = c(1987,9), freq = 12)
+head(co2.ts)
+plot(co2.ts, xlab = "Time", ylab = "CO2", main = "CO2 Concentration")
+
+components.ts = decompose(co2.ts)
+plot(components.ts)
+
+library(ggplot2)
+## detrend and plot seasonal subseries
+## detrend removes mean or (piecewise) linear trend
+co2.dt <- co2
+co2.dt$CO2 <- detrend(co2.dt$CO2, tt = "linear")
+co2.dt.ts <- ts(co2.dt$CO2, start = c(1974,5), freq = 12)
+head(co2.dt.ts)
+plot(co2.dt.ts, xlab = "Time", ylab = "CO2", main = "CO2 Concentration")
+
+## seasonal subseries; use detrended time series
+ggsubseriesplot(co2.dt.ts) + ggtitle("CO2 Concentration") + xlab("Month") + 
+  ylab("Concentration")
+
+## seasonal boxplot; use detrended raw data
+boxplot(CO2 ~ Month, data = co2.dt, xlab = "Month", ylab = "CO2", main = "CO2 Concentration")
+
+## southern oscillation
+oscillation<-read.csv('southern-oscillation.csv')
+oscillation.ts <- ts(oscillation$Oscillation, start = c(1955,1), freq = 12)
+plot(oscillation.ts, xlab = "Time", ylab = "Oscillation", main = "Southern Oscillation")
+
+components.ts = decompose(oscillation.ts)
+plot(components.ts)
+
+## detrend and plot seasonal subseries
+oscillation.dt <- oscillation
+oscillation.dt$Oscillation <- detrend(oscillation.dt$Oscillation, tt = "linear")
+head(oscillation.dt, 24)
+oscillation.dt.ts <- ts(oscillation.dt$Oscillation, start = c(1974,5), freq = 12)
+plot(oscillation.dt.ts, xlab = "Time", ylab = "Oscillation", main = "Southern Oscillation")
+ggsubseriesplot(oscillation.dt.ts) + ggtitle("Southern Oscillation") + xlab("Month") + 
+  ylab("Oscillation")
+
+## seasonal boxplot
+boxplot(Oscillation ~ Month, data = oscillation.dt, xlab = "Month", ylab = "Oscillation", 
+        main = "Southern Oscillation")
+
+##############################################################################
+## forecasting by linear model
+## fit linear model
+
+library(forecast) 
+Amtrak.data <- read.csv("Amtrak.csv")
+
+## create time series
+ridership.ts <- ts(Amtrak.data$Ridership, start = c(1991,1),
+                   end = c(2004,3), freq = 12)
+
+## produce linear trend model
+ridership.lm <- tslm(ridership.ts ~ trend)
+
+## plot the series
+plot(ridership.ts, xlab = "Time", ylab = "Ridership", ylim = c(1300,2300),
+     bty = "l")
+lines(ridership.lm$fitted, lwd = 2)
+
+## split to training and validation sets
+nValid <- 12
+nTrain <- length(ridership.ts) - nValid
+
+train.ts <- window(ridership.ts, start = c(1991, 1), end = c(1991, nTrain))
+valid.ts <- window(ridership.ts, start = c(1991, nTrain + 1), 
+                   end = c(1991, nTrain + nValid))
+
+## fit linear trend model to training set and create forecasts
+train.lm <- tslm(train.ts ~ trend)
+train.lm
+train.lm.pred <- forecast(train.lm, h = nValid, level = 0)
+
+par(mfrow = c(2, 1))
+plot(train.lm.pred, ylim = c(1300, 2600),  ylab = "Ridership", xlab = "Time", 
+     bty = "l", xaxt = "n", xlim = c(1991,2006.25), main = "", flty = 2)
+axis(1, at = seq(1991, 2006, 1), labels = format(seq(1991, 2006, 1)))
+lines(train.lm.pred$fitted, lwd = 2, col = "blue")
+lines(valid.ts)
+plot(train.lm.pred$residuals, ylim = c(-420, 500),  ylab = "Forecast Errors", 
+     xlab = "Time", bty = "l", xaxt = "n", xlim = c(1991,2006.25), main = "")
+axis(1, at = seq(1991, 2006, 1), labels = format(seq(1991, 2006, 1)))
+lines(valid.ts - train.lm.pred$mean, lwd = 1)
+
+## plot actual vs. predicted and calculte RMSE
+par(mfrow = c(1, 1))
+pred.valid <- data.frame(cbind(valid.ts, train.lm.pred$mean))
+colnames(pred.valid) <- c("Actual", "Predicted")
+t <- c(1:12)
+plot(t, pred.valid$Actual, type = "l", col = "blue", ylab = "Values", 
+     main = "Actual vs. Predicted")
+lines(t, pred.valid$Predicted, type = "l", col = "red")
+legend(x = "topright", legend = c("Actual", "Predicted"), col=c("blue","red"),
+       lty = c(1, 1), cex = 0.8)
+## RMSE
+pred.rmse <- sqrt(sum((pred.valid$Actual - pred.valid$Predicted)^2)/nValid)
+pred.rmse
+
+measures <- forecast::accuracy(train.lm.pred, valid.ts)
+measures
+
+##############################################################################
+## fit exponential trend using tslm() with argument lambda = 0 
+## log(Y) transformation is automatically done
+train.lm.expo.trend <- tslm(train.ts ~ trend, lambda = 0)
+train.lm.expo.trend
+train.lm.expo.trend.pred <- forecast(train.lm.expo.trend, h = nValid, level = 0)
+
+plot(train.lm.expo.trend.pred, ylim = c(1300, 2600),  ylab = "Ridership", 
+     xlab = "Time", bty = "l", xaxt = "n", xlim = c(1991,2006.25), main = "", flty = 2)
+axis(1, at = seq(1991, 2006, 1), labels = format(seq(1991, 2006, 1)))
+lines(train.lm.expo.trend.pred$fitted, lwd = 2, col = "blue")  
+lines(train.lm.pred$fitted, lwd = 2, col = "green", lty = 3)
+lines(train.lm.pred$mean, lwd = 2, col = "red", lty = 3)
+lines(valid.ts)
+
+## test on test set
+## plot actual vs. predicted and calculate RMSE
+pred.valid <- data.frame(cbind(valid.ts, train.lm.expo.trend.pred$mean))
+colnames(pred.valid) <- c("Actual", "Predicted")
+t <- c(1:12)
+plot(t, pred.valid$Actual, type = "l", col = "blue", ylab = "Values", 
+     main = "Actual vs. Predicted")
+lines(t, pred.valid$Predicted, type = "l", col = "red")
+legend(x = "topright", legend = c("Actual", "Predicted"), col=c("blue","red"),
+       lty = c(1, 1), cex = 0.8)
+
+forecast::accuracy(train.lm.expo.trend.pred, valid.ts)
+
+##############################################################################
+# fit quadratic trend 
+train.lm.poly.trend <- tslm(train.ts ~ trend + I(trend^2))
+summary(train.lm.poly.trend)
+train.lm.poly.trend.pred <- forecast(train.lm.poly.trend, h = nValid, level = 0)
+
+plot(train.lm.poly.trend.pred, ylim = c(1300, 2600),  ylab = "Ridership", 
+     xlab = "Time", bty = "l", xaxt = "n", xlim = c(1991,2006.25), main = "", flty = 2)
+axis(1, at = seq(1991, 2006, 1), labels = format(seq(1991, 2006, 1))) 
+lines(train.lm.poly.trend$fitted, lwd = 2)
+lines(valid.ts)
+
+## plot actual vs. predicted and calculate RMSE
+pred.valid <- data.frame(cbind(valid.ts, train.lm.poly.trend.pred$mean))
+colnames(pred.valid) <- c("Actual", "Predicted")
+t <- c(1:12)
+plot(t, pred.valid$Actual, type = "l", col = "blue", ylab = "Values", 
+     main = "Actual vs. Predicted")
+lines(t, pred.valid$Predicted, type = "l", col = "red")
+legend(x = "topright", legend = c("Actual", "Predicted"), col=c("blue","red"),
+       lty = c(1, 1), cex = 0.8)
+
+forecast::accuracy(train.lm.poly.trend.pred, valid.ts)
+
+#############################################################################
+## seasonality
+## include season as a predictor in tslm(); creates 11 dummies, 
+## one for each month except for the first season, January.  
+train.lm.season <- tslm(train.ts ~ season)
+summary(train.lm.season)
+train.lm.season.pred <- forecast(train.lm.season, h = nValid, level = 0)
+
+par(mfrow = c(2,1))
+plot(train.lm.season.pred, ylim = c(1300, 2600),  ylab = "Ridership", 
+     xlab = "Time", bty = "l", xaxt = "n", xlim = c(1991,2006.25), main = "", flty = 2)
+axis(1, at = seq(1991, 2006, 1), labels = format(seq(1991, 2006, 1))) 
+lines(train.lm.season.pred$fitted, lwd = 2)
+lines(valid.ts)
+
+plot(train.lm.season$residuals, ylim = c(-400, 550),  ylab = "Forecast Errors", 
+     xlab = "Time", bty = "l", xaxt = "n", xlim = c(1991,2006.25), main = "")
+axis(1, at = seq(1991, 2006, 1), labels = format(seq(1991, 2006, 1)))
+lines(valid.ts - train.lm.season.pred$mean, lwd = 1)
+
+par(mfrow = c(1,1))
+## plot actual vs. predicted and calculte RMSE
+pred.valid <- data.frame(cbind(valid.ts, train.lm.season.pred$mean))
+colnames(pred.valid) <- c("Actual", "Predicted")
+t <- c(1:12)
+plot(t, pred.valid$Actual, ylim = c(1500, 2300), type = "l", col = "blue", ylab = "Values", 
+     main = "Actual vs. Predicted")
+lines(t, pred.valid$Predicted, type = "l", col = "red")
+legend(x = "topright", legend = c("Actual", "Predicted"), col=c("blue","red"),
+       lty = c(1, 1), cex = 0.8)
+
+forecast::accuracy(train.lm.season.pred, valid.ts)
+
+##############################################################################
+## quadratic trend and seasonality
+train.lm.trend.season <- tslm(train.ts ~ trend + I(trend^2) + season)
+summary(train.lm.trend.season)
+train.lm.trend.season.pred <- forecast(train.lm.trend.season, h = nValid, level = 0)
+
+par(mfrow = c(2,1))
+plot(train.lm.trend.season.pred, ylim = c(1300, 2600),  ylab = "Ridership", 
+     xlab = "Time", bty = "l", xaxt = "n", xlim = c(1991,2006.25), main = "", flty = 2)
+axis(1, at = seq(1991, 2006, 1), labels = format(seq(1991, 2006, 1))) 
+lines(train.lm.trend.season.pred$fitted, lwd = 2)
+lines(valid.ts)
+
+plot(train.lm.trend.season$residuals, ylim = c(-400, 550),  ylab = "Forecast Errors", 
+     xlab = "Time", bty = "l", xaxt = "n", xlim = c(1991,2006.25), main = "")
+axis(1, at = seq(1991, 2006, 1), labels = format(seq(1991, 2006, 1)))
+lines(valid.ts - train.lm.trend.season.pred$mean, lwd = 1)
+
+par(mfrow = c(1,1))
+## plot actual vs. predicted and calculte RMSE
+pred.valid <- data.frame(cbind(valid.ts, train.lm.trend.season.pred$mean))
+colnames(pred.valid) <- c("Actual", "Predicted")
+t <- c(1:12)
+plot(t, pred.valid$Actual, ylim = c(1800, 2300), type = "l", col = "blue", ylab = "Values", 
+     main = "Actual vs. Predicted")
+lines(t, pred.valid$Predicted, type = "l", col = "red")
+legend(x = "topright", legend = c("Actual", "Predicted"), col=c("blue","red"),
+       lty = c(1, 1), cex = 0.7)
+
+forecast::accuracy(train.lm.trend.season.pred, valid.ts)
+
+###############################################################################
+## centered and trailing moving average
+
+library(zoo) # for rollmean
+
+## centered moving average with window size = 12
+ma.centered <- ma(ridership.ts, order = 12)
+
+## trailing moving average with window k = 12
+## in rollmean(), use argument align = right to calculate a trailing moving average.
+ma.trailing <- rollmean(ridership.ts, k = 12, align = "right")
+
+## generate a plot 
+plot(ridership.ts, ylim = c(1300, 2200),  col="blue",ylab = "Ridership", 
+     xlab = "Time", bty = "l", xaxt = "n", 
+     xlim = c(1991,2004.25), main = "")
+axis(1, at = seq(1991, 2004.25, 1), labels = format(seq(1991, 2004.25, 1)))
+lines(ma.centered, col="red", lwd = 2)
+lines(ma.trailing, col="green", lwd = 2, lty = 2)
+legend(x="topright", legend=c("Ridership","Centered Moving Average", "Trailing Moving Average"),
+       col=c("blue","red", "green"),
+       lty=c(1,1,2), lwd=c(1,2,2), cex=0.7, bty = "n")
+
+##############################################################################
+## run Holt-Winters exponential smoothing
+## use ets() with option model = "MAA" to fit Holt-Winter's exponential smoothing 
+## with multiplicative error, additive trend, and additive seasonality. 
+## ets: Exponential smoothing state space model
+
+hwin <- ets(train.ts, model = "AAA")
+hwin.pred <- forecast(hwin, h = nValid, level = 0)
+
+## plot the series
+plot(hwin.pred, ylim = c(1300, 2600),  ylab = "Ridership", xlab = "Time", 
+     bty = "l", xaxt = "n", xlim = c(1991,2006.25), main = "", flty = 2)
+axis(1, at = seq(1991, 2006, 1), labels = format(seq(1991, 2006, 1)))
+lines(hwin.pred$fitted, lwd = 2, col = "blue")
+lines(valid.ts)
+
+## plot actual vs. predicted and calculte RMSE
+pred.valid <- data.frame(cbind(valid.ts, hwin.pred$mean))
+colnames(pred.valid) <- c("Actual", "Predicted")
+t <- c(1:12)
+plot(t, pred.valid$Actual, ylim = c(1700, 2300), type = "l", col = "blue", ylab = "Values", 
+     main = "Actual vs. Predicted")
+lines(t, pred.valid$Predicted, type = "l", col = "red")
+legend(x = "topright", legend = c("Actual", "Predicted"), col=c("blue","red"),
+       lty = c(1, 1))
+
+forecast::accuracy(hwin.pred, valid.ts)
+
+##############################################################################
+## autocorrelation
+## Amtrak
+amtrak.data<-read.csv('Amtrak.csv')
+ridership.ts <- ts(amtrak.data$Ridership, start = c(1991,1),
+                   end = c(2004,3), freq = 12)
+ridership.24.ts <- window(ridership.ts, start = c(1991, 1), end = c(1992, 12))
+plot(ridership.24.ts)
+
+## acf computes and plots autocorrelation at different lags
+Acf(ridership.24.ts, lag.max = 12, main = "Amtrak Ridership Autocorrelation")
+
+##############################################################################
+## ARIMA
+## arima(p, d, q)
+## p: AR order, d: degree of differences, q: MA order
+
+## arima(1,1,1), no seasonality
+arima.model <- arima(train.ts, order=c(1,1,1), method="ML")
+forecast_1<-forecast(arima.model, h = nValid, level = 0)
+
+## plot actual vs. predicted and calculate RMSE
+pred.valid <- data.frame(cbind(valid.ts, forecast_1$mean))
+colnames(pred.valid) <- c("Actual", "Predicted")
+t <- c(1:12)
+plot(t, pred.valid$Actual, type = "l", col = "blue", ylab = "Values", 
+     main = "Actual vs. Predicted")
+lines(t, pred.valid$Predicted, type = "l", col = "red")
+legend(x = "topright", legend = c("Actual", "Predicted"), col=c("blue","red"),
+       lty = c(1, 1))
+
+forecast::accuracy(forecast_1, valid.ts)
+
+## with seasonality
+arima.model <- arima(train.ts, order=c(1,1,1),seasonal = 
+                    list(order = c(1,1,1), period = 12), method="ML")
+forecast_1<-forecast(arima.model, h = nValid, level = 0)
+
+## plot actual vs. predicted and calculte RMSE
+pred.valid <- data.frame(cbind(valid.ts, forecast_1$mean))
+colnames(pred.valid) <- c("Actual", "Predicted")
+t <- c(1:12)
+plot(t, pred.valid$Actual, ylim = c(1700, 2300), type = "l", col = "blue", ylab = "Values", 
+     main = "Actual vs. Predicted")
+lines(t, pred.valid$Predicted, type = "l", col = "red")
+legend(x = "topright", legend = c("Actual", "Predicted"), col=c("blue","red"),
+       lty = c(1, 1))
+
+forecast::accuracy(forecast_1, valid.ts)
+
+## auto.arima
+auto.arima.fit <- auto.arima(train.ts)
+arimaorder(auto.arima.fit)
+
+print(paste("non_seasonal_ar_order = ", auto.arima.fit$arma[1]))
+print(paste("non_seasonal_diff_order = ", auto.arima.fit$arma[6]))
+print(paste("non_seasonal_ma_order = ", auto.arima.fit$arma[2]))
+print(paste("seasonal_ar_order = ", auto.arima.fit$arma[3]))
+print(paste("seasonal_diff_order = ", auto.arima.fit$arma[7]))
+print(paste("seasonal_ma_order = ", auto.arima.fit$arma[4]))
+print(paste("period_of_data = ", auto.arima.fit$arma[5])) # 1 for is non-seasonal data
+
+## use parameters from auto.arima
+
+arima.model <- arima(train.ts, order=c(1,1,1),seasonal = 
+                       list(order = c(0,1,1), period = 12), method="ML")
+
+forecast_1<-forecast(arima.model, h = nValid, level = 0)
+
+## plot actual vs. predicted and calculte RMSE
+pred.valid <- data.frame(cbind(valid.ts, forecast_1$mean))
+colnames(pred.valid) <- c("Actual", "Predicted")
+t <- c(1:12)
+plot(t, pred.valid$Actual, ylim = c(1700, 2300), type = "l", col = "blue", ylab = "Values", 
+     main = "Actual vs. Predicted")
+lines(t, pred.valid$Predicted, type = "l", col = "red")
+legend(x = "topright", legend = c("Actual", "Predicted"), col=c("blue","red"),
+       lty = c(1, 1))
+
+forecast::accuracy(forecast_1, valid.ts)
+
+#############################################################################
+
+
+
+
+
