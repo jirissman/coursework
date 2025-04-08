@@ -1,0 +1,360 @@
+5eb871d6af7bc1dd0a6ce5f8083f07bbc5e0e566
+Yue Zhang <yuezhang0594@gmail.com>
+1743509519
+style(Dashboard): Add "View all" button for Application Docu section.
+
+
+----------
+18c55969a4e9413670122b6b0ae2aedff07ea7ab
+Yue Zhang <yuezhang0594@gmail.com>
+1743474368
+fix(docClickableCard):Fix bugs on dashboard and applicationDetails page; allowing pass state hook through clickableCard
+
+
+----------
+0887de8b00ee76c405add563ae44ab0855afcf16
+Yue Zhang <yuezhang0594@gmail.com>
+1743470310
+feat(docEditor): Add mutation to save document text changes.
+
+
+----------
+9592b9f2dd6276d7df3ce0c279f2c316b6bbac25
+Yue Zhang <yuezhang0594@gmail.com>
+1743470164
+feat(docEditor): Add mutation to save document text changes.
+
+
+----------
+490a9a987f000a4d2d9be10b24e5015d40e4962b
+Yue Zhang <yuezhang0594@gmail.com>
+1743392690
+style(UI): improve alignment in applicationDetails page; DocuEditor Page tilte CAP format.
+
+
+----------
+8bd50558fb89974107a1aa26d7a4f703a96d0866
+Yue Zhang <yuezhang0594@gmail.com>
+1743391360
+refactor(DocuEditor):  enable fetch data from convex "applicationDocuments"; allow demoMode; Uses Jotai atom to store applicationId and documentType; Maintains friendly URLs with university names; Passes applicationId from the card to the editor
+
+
+----------
+b239c61aada047f035824313319d53aef0cb2836
+Yue Zhang <yuezhang0594@gmail.com>
+1743382276
+fix(documents): allows multiple applications under a university; UI update card-wrapper reduce vertical spacing.
+
+
+----------
+2a0770411b83edc6a4ec8ae7f155a068075c2664
+Yue Zhang <yuezhang0594@gmail.com>
+1743379469
+update (UI): align card content in dashboard; apply Pagewrapper to documentEditor.
+
+
+----------
+26f8c179efcdde7178ef0c17ef2e54147960fcec
+Yue Zhang <yuezhang0594@gmail.com>
+1743355614
+refactor(ApplicationDetails): enable data fetching from convex;  fix header URL convertion; add  getApplicationDetails in queries function; minor UI updates for dashBorad
+
+
+----------
+4ae3aa04fa483f7296e9d33baad160661cf16ae6
+Yue Zhang <yuezhang0594@gmail.com>
+1743312529
+update: minor UI changes in Dashboard Application timeline card; auto hide program on smaller screen
+
+
+----------
+eaca05bbfceb69800863a6d9fd03836f902ad94e
+Yue Zhang <yuezhang0594@gmail.com>
+1743311128
+refactor(Dashboard): Allow data fetch from convex; add useDashboardData hook; update queriese api
+
+
+----------
+a5bcaa71c705dd8061afdefa58d09c15610c181e
+Yue Zhang <yuezhang0594@gmail.com>
+1743301765
+refactor: Intruduce "card-wrapper", ensure consistent style for Card component; increase code reusage.
+
+
+----------
+16a01488cba749bb3a4ccdd6d7b1ae9b2e05a62d
+Joseph Rissman <jirissman@gmail.com>
+1743299407
+feat(userProfile): add Clerk profile route to update/delete user profile if clerk gets desynched from convex
+
+
+----------
+7ecc4e09390487e82f3b6453e73cac51c552c4c9
+Yue Zhang <yuezhang0594@gmail.com>
+1743299300
+fix: fix Header Breadcrumb Page display replace "%20" with space.
+
+
+----------
+7d5cbe132c1f47488163437ce6fab5940306b9d7
+Yue Zhang <yuezhang0594@gmail.com>
+1743298131
+refacor: allowing fetching application doc data from convex; updates UI for documents page
+
+
+----------
+56f97753cd95903bbe7e84c3b2ebdb3a0f62b0be
+Yue Zhang <yuezhang0594@gmail.com>
+1743296457
+updates: changes in applications page adding degree in Application Card.  Updates in init.ts; adding degree in application queries.ts
+
+
+----------
+7ab99eda6b6014dec303db2e6e9b1d8df1558ad5
+Yue Zhang <yuezhang0594@gmail.com>
+1743290514
+style(applications card): fix applicaiton card alignments
+
+
+----------
+1ea19e58ae3884124988fdff6c4c1d6092e73572
+Yue Zhang <yuezhang0594@gmail.com>
+1743288734
+style(PageTitle): apply PageWapper style to Dashboard Cards
+
+
+----------
+d8080fc4cb751dd31157ad39a52371a0c4b0fadf
+Yue Zhang <yuezhang0594@gmail.com>
+1743287754
+refactor: adding programId in applications table; updates schema/init.ts accordingly; adapt PageWraper to application/timeline pages
+
+
+----------
+4dcbc4242556def1108191f6c55a4911bbe46ee3
+Yue Zhang <yuezhang0594@gmail.com>
+1743044957
+fix: Landing page bottom "get started" button
+
+
+----------
+29ac81615c38208ad13da13f4e447ef1f88541e7
+Joseph Rissman <jirissman@gmail.com>
+1743038911
+style(app-sidebar): improve layout and add branding information
+
+
+----------
+7b4296dcff5e10795ee85c544e1b7474eac3386a
+Joseph Rissman <jirissman@gmail.com>
+1743037291
+refactor(database): enhance data deletion and initialization process
+
+- Improved the logic for deleting existing demo user data and associated records.
+- Added checks to conditionally keep profile data during database initialization.
+- Streamlined the insertion of mock user and associated profile data.
+- Updated the handling of AI credits to only initialize when profile data is not retained.
+- Cleaned up console logging for better clarity during operations.
+
+This refactor aims to enhance the maintainability and clarity of the database initialization process.
+
+----------
+3fc0af9a660dc89cc0f1b8418f05c8392ef194b6
+Joseph Rissman <jirissman@gmail.com>
+1743033436
+fix: Refactor database initialization to support optional profile data retention
+
+Updated the database initialization process to allow for the retention of user profile data during resets. Introduced new command options in package.json for full resets and profile data retention. Enhanced logging for cleared and retained tables.
+
+----------
+320665eef79c352c9a8e832d5ddf44d4158e94cb
+NKBojji <104710978+nitin11158@users.noreply.github.com>
+1743028311
+Add 20+ universities and corresponding programs to database seed data
+
+
+----------
+b6d0c7377ece14034f34f3e3c69a3e03325453c0
+Joseph Rissman <jirissman@gmail.com>
+1742970928
+feat: implement onboarding steps and profile validators
+
+- Add <PageWrapper> component to standardize page layouts across website.
+- Introduce new <Collapsible> component for UI interactions.
+- Make profile validation interfaces reusable for personal info, education, test scores, and career goals.
+- Update onboarding steps to use new validators for improved data handling.
+- Include new Radix UI elements for enhanced UI functionality. More clearly displaying loading and error states.
+- Migrate query and mutation logic to useProfile hook and backend source code for greater maintainability.
+- Implement <AuthenticatedRoute> to control user flow for better UX and data integrity.
+- Refactor site navigation to use navigate from react-router-dom to improve loading times.
+- UI improvements to increase consistency across pages.
+
+----------
+962280663e791157b9d26046dee574ca204fda40
+Joseph Rissman <jirissman@gmail.com>
+1742949027
+feat: add ProgramApplyPage route and implement application process hook; enhance UI components
+
+
+----------
+a7bdf5e112ea8befb66160d542e42659d3ff9ddc
+Yue Zhang <yuezhang0594@gmail.com>
+1742874580
+refactor: update timeline data fetching method to convex
+
+
+----------
+f67237030d25a4aaba33bc8263cc3b0d1ccead0f
+Yue Zhang <yuezhang0594@gmail.com>
+1742873922
+update: minor changes on application demo data fetching; adding requirements column in applications table for timeline page
+
+
+----------
+2833250257788fda6a4e32ba71c622fa3c20e0d2
+Yue Zhang <yuezhang0594@gmail.com>
+1742871837
+refactor: update userActivity card to convex data fectching
+
+
+----------
+688c64c9e76e7185ae2255abb3fd9a834a54943a
+Yue Zhang <yuezhang0594@gmail.com>
+1742865455
+update: link url to sidebar support components
+
+
+----------
+8090d0e7d02392d8efd6e7768edee94fc934e183
+Yue Zhang <yuezhang0594@gmail.com>
+1742864929
+refactor: update aiCredit fetch method to convex
+
+
+----------
+5687ee2d64810254185cd00c38e523bef7a92e44
+Joseph Rissman <jirissman@gmail.com>
+1742828048
+style: enhance layout and styling of Saved Programs page; improve button labels and add responsive design
+
+
+----------
+cf98a75019a64c2401ca16b35a1fed56f911ca0a
+Joseph Rissman <jirissman@gmail.com>
+1742825201
+add todo notes
+
+
+----------
+ebbbda4ef311a5ffb825cd1dde5bd1afb56cfd90
+Yue Zhang <yuezhang0594@gmail.com>
+1742820916
+fix: minor change on "Complete" buttons to "Next" during profile update/creation
+
+
+----------
+3ea54adff110242c64ef9f7c14aa97bf90a256c1
+Yue Zhang <yuezhang0594@gmail.com>
+1742820072
+fix: update update profile process, allowing click through each step; fix university card in applications
+
+
+----------
+2d406d0da018898bf8f7ae7277ac7fc1740eb472
+Joseph Rissman <jirissman@gmail.com>
+1742788800
+feat: add SavedProgramsPage route and implement EmptyState component; enhance favorites functionality with university data integration
+
+
+----------
+0c213dda776e8f2e5a90dc0f8d59d447e16d9c45
+Yue Zhang <yuezhang0594@gmail.com>
+1742783225
+refactor: update applications fetch directly from convex
+
+
+----------
+4fe06205add0c707b5b35be26dbd91ceb329007d
+Yue Zhang <yuezhang0594@gmail.com>
+1742781399
+fix: profile creation and modification process with newUserId fetch method
+
+
+----------
+77f8aa6f36f368bf309fd821e6eccf02845e4475
+Joseph Rissman <jirissman@gmail.com>
+1742766034
+refactor: update convex file structure dashboard mutations and queries for application and document management
+
+
+----------
+e7e19172afd68d1295a3bae94620b37207f73c9f
+Joseph Rissman <jirissman@gmail.com>
+1742765891
+refactor: reorganize userProfiles API structure by separating mutations and queries for improved clarity and maintainability
+
+
+----------
+f27bea51ea760b40ea4a26f42381ff5db8ee316d
+Joseph Rissman <jirissman@gmail.com>
+1742764733
+refactor: simplify UniversityCard and useFavorites hooks by removing userId dependency, enhancing clarity and functionality
+
+
+----------
+6afd64704636053cbec47aee1b539516f88069d2
+Joseph Rissman <jirissman@gmail.com>
+1742762394
+refactor: remove userId argument from profile queries and use current user ID directly for improved clarity and simplicity
+
+
+----------
+2cd87dfe391c86056e855eceb5d1057a2d06fb7c
+Joseph Rissman <jirissman@gmail.com>
+1742762082
+refactor: simplify favorite program queries by removing Clerk user ID dependency and using current user ID directly
+
+
+----------
+dd18b9a954461aa96c129a9cb7f37a812d5971df
+Joseph Rissman <jirissman@gmail.com>
+1742761971
+refactor: update user profile queries to retrieve current user ID dynamically, simplifying argument handling
+
+
+----------
+b3941bf6e1c14c880560d6ebb1a7818dbf257be0
+Joseph Rissman <jirissman@gmail.com>
+1742761949
+feat: add functions to retrieve current user ID, enhancing user management capabilities
+
+
+----------
+62b5aaa7613cd6cfb8f6b1be40a8616a7627df04
+Joseph Rissman <jirissman@gmail.com>
+1742758091
+refactor: update UniversityCard component to use Program type from schema, improve date formatting logic, fix and simplify UI components, add collapsable element to filter panel
+
+
+----------
+419a8cc9c9ae8882146969f13714e4b4b48dba1c
+Joseph Rissman <jirissman@gmail.com>
+1742758012
+refactor: remove old AppSidebar component and update user display in Header to use user ID (for dev purposes)
+
+
+----------
+43214e2989d081b3e23f489ca8e00a2a2e39ba26
+Joseph Rissman <jirissman@gmail.com>
+1742753027
+refactor: update user ID handling to use Clerk IDs in database schema and queries
+
+
+----------
+ef38990ea4ec2ec69691e7666c7f554a3b198eed
+Joseph Rissman <jirissman@gmail.com>
+1742752486
+feat: implement Clerk user management with webhook integration and schema updates
+
+
+----------
