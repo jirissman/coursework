@@ -1,0 +1,4 @@
+This is a test file.
+It contains multiple lines of text.
+It can be used to test the mycat command.
+This is the end of the file.

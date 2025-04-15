@@ -23,6 +23,9 @@
 int lsh_cd(char **args);
 int lsh_help(char **args);
 int lsh_exit(char **args);
+int mypwd(char **args);
+int myecho(char **args);
+int mycat(char **args);
 
 /*
   List of builtin commands, followed by their corresponding functions.
@@ -30,12 +33,18 @@ int lsh_exit(char **args);
 char *builtin_str[] = {
     "cd",
     "help",
-    "exit"};
+    "exit",
+    "mypwd",
+    "myecho",
+    "mycat"};
 
 int (*builtin_func[])(char **) = {
     &lsh_cd,
     &lsh_help,
-    &lsh_exit};
+    &lsh_exit,
+    &mypwd,
+    &myecho,
+    &mycat};
 
 int lsh_num_builtins()
 {
@@ -97,6 +106,76 @@ int lsh_exit(char **args)
 {
     return 0;
 }
+
+/**
+   @brief Builtin command: print working directory.
+   @param args List of args.  Not examined.
+   @return Always returns 1, to continue executing.
+ */
+int mypwd(char **args)
+{
+    char cwd[1024];
+    if (getcwd(cwd, sizeof(cwd)) != NULL)
+    {
+        printf("%s\n", cwd);
+    }
+    else
+    {
+        perror("mypwd: getcwd() error");
+    }
+    return 1;
+}
+
+/**
+   @brief Builtin command: echo with one argument.
+   @param args List of args. args[1] is the string to echo.
+   @return Always returns 1, to continue executing.
+ */
+int myecho(char **args)
+{
+    if (args[1] == NULL)
+    {
+        fprintf(stderr, "myecho: expected argument\n");
+    }
+    else
+    {
+        printf("%s\n", args[1]);
+    }
+    return 1;
+}
+
+/**
+   @brief Builtin command: cat (display file contents).
+   @param args List of args. args[1] is the filename.
+   @return Always returns 1, to continue executing.
+ */
+int mycat(char **args)
+{
+    if (args[1] == NULL)
+    {
+        fprintf(stderr, "mycat: expected argument\n");
+        return 1;
+    }
+
+    FILE *fp;
+    int ch;
+
+    fp = fopen(args[1], "r");
+    if (fp == NULL)
+    {
+        perror("mycat: fopen error");
+        return 1;
+    }
+
+    while ((ch = fgetc(fp)) != EOF)
+    {
+        printf("%c", ch);
+    }
+    printf("\n");
+    fclose(fp);
+    return 1;
+}
+
 
 /**
   @brief Launch a program and wait for it to terminate.
