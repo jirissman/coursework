@@ -4,3 +4,4 @@
 ~$*
 *.mov
 *.egg-info
+__pycache__
